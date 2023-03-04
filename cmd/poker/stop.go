@@ -11,11 +11,11 @@ import (
 	"poker/internal/service"
 )
 
-// startCmd represents the start command
-var startCmd = &cobra.Command{
-	Use:   "start CONTAINER [CONTAINER...]",
-	Short: "Start one or more stopped or exited containers",
-	Run:   start,
+// stopCmd represents the stop command
+var stopCmd = &cobra.Command{
+	Use:   "stop CONTAINER [CONTAINER...]",
+	Short: "Stop one or more running containers",
+	Run:   stop,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			alert.Error(errors.New("enter at least one container"))
@@ -24,12 +24,8 @@ var startCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	rootCmd.AddCommand(startCmd)
-}
-
-func start(cmd *cobra.Command, args []string) {
-	r, err := client.StartContainer(context.Background(), &service.StartContainersReq{ContainerIds: args})
+func stop(_ *cobra.Command, args []string) {
+	r, err := client.StopContainer(context.Background(), &service.StopContainersReq{ContainerIds: args})
 	if err != nil {
 		alert.Error(err)
 	}

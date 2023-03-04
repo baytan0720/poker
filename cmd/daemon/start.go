@@ -17,10 +17,6 @@ var StartCmd = &cobra.Command{
 	Run:   start,
 }
 
-func init() {
-	rootCmd.AddCommand(StartCmd)
-}
-
 func start(*cobra.Command, []string) {
 	if err := daemon.Server(PORT); err != nil {
 		alert.Error(err)

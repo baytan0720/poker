@@ -26,17 +26,31 @@ message CreateContainerRes {
   string ContainerId = 3;
 }
 
-message StartContainerReq {
-  string ContainerId = 1;
-}
-
-message StartContainerRes {
+message StartNStopContainerInfo {
   Status Status = 1;
   string Msg = 2;
+  string ContainerId = 3;
+}
+
+message StartContainersReq {
+  repeated string ContainerIds = 1;
+}
+
+message StartContainersRes {
+  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
+}
+
+message StopContainersReq {
+  repeated string ContainerIds = 1;
+}
+
+message StopContainersRes {
+  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
 }
 
 service daemon {
   rpc Ping(PingReq) returns(PingRes);
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
-  rpc StartContainer(StartContainerReq) returns(StartContainerRes);
+  rpc StartContainer(StartContainersReq) returns(StartContainersRes);
+  rpc StopContainer(StopContainersReq) returns(StopContainersRes);
 }

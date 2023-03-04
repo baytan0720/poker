@@ -2,8 +2,12 @@ package alert
 
 import "fmt"
 
-func Print(msg string) {
+func Println(msg string) {
 	fmt.Println(msg)
+}
+
+func Print(msg string) {
+	fmt.Print(msg)
 }
 
 func Error(err error) {

@@ -4,11 +4,13 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package main
 
 import (
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"context"
 	"os"
 	"poker/alert"
 	"poker/internal/service"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/spf13/cobra"
 )
@@ -38,10 +40,14 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.AddCommand(runCmd, startCmd, stopCmd)
 	opt := grpc.WithDefaultCallOptions(grpc.MaxCallSendMsgSize(MAX_SIZE))
 	conn, err := grpc.Dial("127.0.0.1:"+PORT, grpc.WithTransportCredentials(insecure.NewCredentials()), opt)
 	if err != nil {
 		alert.Error(err)
 	}
 	client = service.NewDaemonClient(conn)
+	if res, err := client.Ping(context.Background(), &service.PingReq{}); err != nil || res.Status != 0 {
+		alert.Error(err)
+	}
 }

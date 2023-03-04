@@ -86,7 +86,7 @@ func generateRandomName() string {
 	}
 	suf := make([]byte, 5)
 	for i := range suf {
-		pre[i] = NAME_RAND_SOURCE[rand.Intn(length)]
+		suf[i] = NAME_RAND_SOURCE[rand.Intn(length)]
 	}
 	return string(pre) + "_" + string(suf)
 }

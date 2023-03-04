@@ -2,33 +2,42 @@ package daemon
 
 import (
 	"context"
+	"log"
 	"poker/internal/container"
 	"poker/internal/service"
+	"strings"
 )
 
 func (d *Daemon) Ping(context.Context, *service.PingReq) (*service.PingRes, error) {
+	log.Println("ping")
 	return &service.PingRes{}, nil
 }
 
 func (d *Daemon) CreateContainer(_ context.Context, req *service.CreateContainerReq) (*service.CreateContainerRes, error) {
+	log.Println("create container from", req.Image)
 	res := &service.CreateContainerRes{}
 
 	id, err := container.CreateContainer(req.Image, req.Command, req.Name)
 	if err != nil {
 		res.Status = 1
 		res.Msg = err.Error()
+		log.Println(err)
 	}
 	res.ContainerId = id
 
 	return res, nil
 }
 
-func (d *Daemon) StartContainer(ctx context.Context, req *service.StartContainerReq) (*service.StartContainerRes, error) {
-	res := &service.StartContainerRes{}
-	err := container.Run(req.ContainerId)
-	if err != nil {
-		res.Status = 1
-		res.Msg = err.Error()
-	}
-	return res, nil
+func (d *Daemon) StartContainer(ctx context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
+	log.Println("start containers", strings.Join(req.ContainerIds, " "))
+	return &service.StartContainersRes{
+		StartNStopContainerInfo: container.Run(req.ContainerIds),
+	}, nil
+}
+
+func (d *Daemon) StopContainer(ctx context.Context, req *service.StopContainersReq) (*service.StopContainersRes, error) {
+	log.Println("start containers", strings.Join(req.ContainerIds, " "))
+	return &service.StopContainersRes{
+		StartNStopContainerInfo: container.Stop(req.ContainerIds),
+	}, nil
 }
