@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package service;
+option go_package="./service";
+
+enum Status {
+  Ok = 0;
+  NotOk = 1;
+}
+
+message PingReq {}
+
+message PingRes {
+  Status Status = 1;
+}
+
+message CreateContainerReq {
+  string Image = 1;
+  string Command = 2;
+  string Name = 3;
+}
+
+message CreateContainerRes {
+  Status Status = 1;
+  string Msg = 2;
+  string ContainerId = 3;
+}
+
+message StartContainerReq {
+  string ContainerId = 1;
+}
+
+message StartContainerRes {
+  Status Status = 1;
+  string Msg = 2;
+}
+
+service daemon {
+  rpc Ping(PingReq) returns(PingRes);
+  rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
+  rpc StartContainer(StartContainerReq) returns(StartContainerRes);
+}

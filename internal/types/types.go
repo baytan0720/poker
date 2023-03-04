@@ -1,0 +1,20 @@
+package types
+
+import "time"
+
+type ContainerMetadata struct {
+	Id      string    `json:"id"`
+	Name    string    `json:"name"`
+	Image   string    `json:"image"`
+	Created time.Time `json:"created"`
+	Command string    `json:"command"`
+	State   State     `json:"state"`
+}
+
+type State struct {
+	Status string    `json:"status"` // Running/Stopped
+	Pid    string    `json:"pid"`
+	Error  string    `json:"error"`
+	Start  time.Time `json:"start"`
+	Finish time.Time `json:"finish"`
+}

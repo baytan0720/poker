@@ -1,19 +1,16 @@
 package alert
 
-import (
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func Error(msg string) {
-	fmt.Println("Error", msg)
+func Print(msg string) {
+	fmt.Println(msg)
 }
 
-func Warm(msg string) {
-	fmt.Println("Warning", msg)
+func Error(err error) {
+	fmt.Println("Error:", err.Error())
+	panic(err)
 }
 
-func Fatal(msg string) {
-	fmt.Println("Error:", msg)
-	os.Exit(0)
+func Warn(msg string) {
+	fmt.Println("Warn:", msg)
 }
