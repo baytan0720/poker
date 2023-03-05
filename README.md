@@ -10,7 +10,7 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 
 ## The functions to be realized(将要实现的功能)
 
-#### **Poker commands:**
+### Poker commands:
 
 build	Build an image from a Dockerfile
 
@@ -42,7 +42,7 @@ version	Show the Docker version information
 
 daemon	A daemon for create and manage containers
 
-#### **Poker-daemon commands:** 
+### Poker-daemon commands: 
 
 start	Start the daemon
 
