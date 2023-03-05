@@ -53,3 +53,15 @@ func (d *Daemon) StopContainer(ctx context.Context, req *service.StopContainersR
 		StartNStopContainerInfo: container.Stop(req.ContainerIds),
 	}, nil
 }
+
+func (d *Daemon) PsContainer(ctx context.Context, req *service.PsContainersReq) (*service.PsContainersRes, error) {
+	res := &service.PsContainersRes{}
+	log.Println("ps containers")
+	containers, err := container.Ps()
+	if err != nil {
+		res.Status = 1
+		res.Msg = err.Error()
+	}
+	res.Containers = containers
+	return res, nil
+}

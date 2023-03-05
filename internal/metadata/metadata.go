@@ -43,3 +43,20 @@ func ReadMetadata(src string) (*types.ContainerMetadata, error) {
 	}
 	return decodeMetadata(b)
 }
+
+func ReadAll(src string) ([]*types.ContainerMetadata, error) {
+	entry, err := os.ReadDir(src)
+	if err != nil {
+		return nil, err
+	}
+	metas := make([]*types.ContainerMetadata, 0, len(entry))
+	for _, v := range entry {
+		metadataFilePath := src + v.Name() + "/metadata.json"
+		meta, err := ReadMetadata(metadataFilePath)
+		if err != nil {
+			continue
+		}
+		metas = append(metas, meta)
+	}
+	return metas, nil
+}

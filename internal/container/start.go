@@ -26,7 +26,7 @@ func Start(containerIds []string) []*service.StartNStopContainerInfo {
 		}
 
 		// check container status
-		if meta.State.Status == "running" {
+		if meta.State.Status == "Running" {
 			continue
 		}
 

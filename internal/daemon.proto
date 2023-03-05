@@ -60,17 +60,29 @@ message StopContainersRes {
 
 message ContainerInfo {
   string Id = 1;
-  string Image = 2;
-  string Command = 3;
-  string Created = 4;
-  string Status = 5;
-  string Names = 6;
+  string Name = 2;
+  string Image = 3;
+  int64 Created = 4;
+  string Command = 5;
+  State State = 6;
 }
 
-message PsContainersReq {}
+message State {
+  string Status = 1;
+  int32 Pid = 2;
+  string Error = 3;
+  int64 Start = 4;
+  int64 Finish = 5;
+}
 
-message PsContainerRes {
+message PsContainersReq {
 
+}
+
+message PsContainersRes {
+  Status Status = 1;
+  string Msg = 2;
+  repeated ContainerInfo containers = 3;
 }
 
 service daemon {
@@ -79,4 +91,5 @@ service daemon {
   rpc RunContainer(RunContainerReq) returns(RunContainerRes);
   rpc StartContainer(StartContainersReq) returns(StartContainersRes);
   rpc StopContainer(StopContainersReq) returns(StopContainersRes);
+  rpc PsContainer(PsContainersReq) returns(PsContainersRes);
 }
