@@ -9,23 +9,25 @@ import (
 
 // exec command args...
 func main() {
+	// need command
 	if len(os.Args) < 2 {
 		os.Exit(0)
 	}
+
 	containerPath := os.Args[0][:91]
 	metadataPath := containerPath + "metadata.json"
+	command := os.Args[1]
+	args := os.Args[2:]
+	hostname := "container"
+	rootfsPath := containerPath + "rootfs"
 
-	// update metadata
-	meta, err := metadata.ReadMetadata(metadataPath)
-	if err != nil {
-		panic(err)
+	// read metadata
+	if meta, err := metadata.ReadMetadata(metadataPath); err == nil {
+		hostname = meta.Name
 	}
 
 	// init
-	command := os.Args[1]
-	args := os.Args[2:]
-	rootfsPath := containerPath + "rootfs"
-	if err := syscall.Sethostname([]byte(meta.Name)); err != nil {
+	if err := syscall.Sethostname([]byte(hostname)); err != nil {
 		panic(err)
 	}
 	if err := syscall.Chroot(rootfsPath); err != nil {
@@ -38,10 +40,10 @@ func main() {
 		panic(err)
 	}
 	path, err := exec.LookPath(command)
-	if err != nil {
-		panic(err)
+	if err == nil {
+		command = path
 	}
-	if err := syscall.Exec(path, args, os.Environ()); err != nil {
+	if err := syscall.Exec(command, args, os.Environ()); err != nil {
 		panic(err)
 	}
 }

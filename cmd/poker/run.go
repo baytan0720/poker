@@ -21,7 +21,7 @@ var runCmd = &cobra.Command{
 	Short: "Run a command in a new container",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			alert.Error(errors.New("need a image, try base"))
+			alert.Error(errors.New("enter a container, try base"))
 		}
 		if args[0] != "base" {
 			alert.Error(errors.New("image not found, try base"))
@@ -62,7 +62,12 @@ func run(cmd *cobra.Command, args []string) {
 		r, err := client.StartContainer(context.Background(), &service.StartContainersReq{
 			ContainerIds: []string{containerId},
 		})
-		checkErr(int32(r.StartNStopContainerInfo[0].Status), r.StartNStopContainerInfo[0].Msg, err)
+		if err != nil {
+			alert.Error(err)
+		}
+		if r.StartNStopContainerInfo[0].Status != 0 {
+			alert.Error(errors.New(r.StartNStopContainerInfo[0].Msg))
+		}
 		alert.Println(containerId)
 		return
 	}

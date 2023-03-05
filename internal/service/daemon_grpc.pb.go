@@ -28,6 +28,7 @@ type DaemonClient interface {
 	StartContainer(ctx context.Context, in *StartContainersReq, opts ...grpc.CallOption) (*StartContainersRes, error)
 	StopContainer(ctx context.Context, in *StopContainersReq, opts ...grpc.CallOption) (*StopContainersRes, error)
 	PsContainer(ctx context.Context, in *PsContainersReq, opts ...grpc.CallOption) (*PsContainersRes, error)
+	LogsContainer(ctx context.Context, in *LogsContainerReq, opts ...grpc.CallOption) (*LogsContainerRes, error)
 }
 
 type daemonClient struct {
@@ -92,6 +93,15 @@ func (c *daemonClient) PsContainer(ctx context.Context, in *PsContainersReq, opt
 	return out, nil
 }
 
+func (c *daemonClient) LogsContainer(ctx context.Context, in *LogsContainerReq, opts ...grpc.CallOption) (*LogsContainerRes, error) {
+	out := new(LogsContainerRes)
+	err := c.cc.Invoke(ctx, "/service.daemon/LogsContainer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DaemonServer is the server API for Daemon service.
 // All implementations must embed UnimplementedDaemonServer
 // for forward compatibility
@@ -102,6 +112,7 @@ type DaemonServer interface {
 	StartContainer(context.Context, *StartContainersReq) (*StartContainersRes, error)
 	StopContainer(context.Context, *StopContainersReq) (*StopContainersRes, error)
 	PsContainer(context.Context, *PsContainersReq) (*PsContainersRes, error)
+	LogsContainer(context.Context, *LogsContainerReq) (*LogsContainerRes, error)
 	mustEmbedUnimplementedDaemonServer()
 }
 
@@ -126,6 +137,9 @@ func (UnimplementedDaemonServer) StopContainer(context.Context, *StopContainersR
 }
 func (UnimplementedDaemonServer) PsContainer(context.Context, *PsContainersReq) (*PsContainersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PsContainer not implemented")
+}
+func (UnimplementedDaemonServer) LogsContainer(context.Context, *LogsContainerReq) (*LogsContainerRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LogsContainer not implemented")
 }
 func (UnimplementedDaemonServer) mustEmbedUnimplementedDaemonServer() {}
 
@@ -248,6 +262,24 @@ func _Daemon_PsContainer_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Daemon_LogsContainer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogsContainerReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DaemonServer).LogsContainer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.daemon/LogsContainer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DaemonServer).LogsContainer(ctx, req.(*LogsContainerReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Daemon_ServiceDesc is the grpc.ServiceDesc for Daemon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +310,10 @@ var Daemon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PsContainer",
 			Handler:    _Daemon_PsContainer_Handler,
+		},
+		{
+			MethodName: "LogsContainer",
+			Handler:    _Daemon_LogsContainer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

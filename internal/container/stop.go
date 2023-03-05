@@ -4,13 +4,20 @@ import (
 	"poker/internal/metadata"
 	"poker/internal/service"
 	"syscall"
-	"time"
 )
 
 func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 	stop := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, containerId := range containerIds {
-		stop[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
+	for i, id := range containerIds {
+		stop[i] = &service.StartNStopContainerInfo{ContainerId: id}
+
+		// check container id
+		containerId, err := find(id)
+		if err != nil {
+			stop[i].Status = 1
+			stop[i].Msg = err.Error()
+			continue
+		}
 		containerPath := CONTAINER_FOLDER_PATH + containerId
 		metadataFilePath := containerPath + "/metadata.json"
 
@@ -34,11 +41,6 @@ func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 			stop[i].Msg = err.Error()
 			continue
 		}
-
-		// update metadata
-		meta.State.Finish = time.Now()
-		meta.State.Status = "Exited"
-		_ = metadata.WriteMetadata(metadataFilePath, meta)
 	}
 
 	return stop

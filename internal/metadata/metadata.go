@@ -44,6 +44,7 @@ func ReadMetadata(src string) (*types.ContainerMetadata, error) {
 	return decodeMetadata(b)
 }
 
+// ReadAll read all metadata
 func ReadAll(src string) ([]*types.ContainerMetadata, error) {
 	entry, err := os.ReadDir(src)
 	if err != nil {

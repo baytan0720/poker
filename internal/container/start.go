@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"poker/internal/logs"
 	"poker/internal/metadata"
 	"poker/internal/service"
 	"syscall"
@@ -12,8 +13,16 @@ import (
 
 func Start(containerIds []string) []*service.StartNStopContainerInfo {
 	start := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, containerId := range containerIds {
-		start[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
+	for i, id := range containerIds {
+		start[i] = &service.StartNStopContainerInfo{ContainerId: id}
+
+		// check container id
+		containerId, err := find(id)
+		if err != nil {
+			start[i].Status = 1
+			start[i].Msg = err.Error()
+			continue
+		}
 		containerPath := CONTAINER_FOLDER_PATH + containerId
 		metadataFilePath := containerPath + "/metadata.json"
 
@@ -25,7 +34,7 @@ func Start(containerIds []string) []*service.StartNStopContainerInfo {
 			continue
 		}
 
-		// check container status
+		// check container status, if running, ignore it.
 		if meta.State.Status == "Running" {
 			continue
 		}
@@ -52,7 +61,7 @@ func Start(containerIds []string) []*service.StartNStopContainerInfo {
 
 		// bind log to stdout
 		logFilePath := CONTAINER_FOLDER_PATH + containerId + "/stdout.log"
-		f, err := os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
+		f, err := logs.OpenLogs(logFilePath)
 		if err != nil {
 			start[i].Status = 1
 			start[i].Msg = err.Error()
@@ -78,12 +87,10 @@ func Start(containerIds []string) []*service.StartNStopContainerInfo {
 				log.Println(err)
 			}
 
-			// wait cmd exit
+			// wait cmd finish
 			err := cmd.Wait()
 			_ = f.Close()
-
 			meta.State.Finish = time.Now()
-
 			if err != nil {
 				meta.State.Error = err.Error()
 			}

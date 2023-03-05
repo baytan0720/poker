@@ -40,7 +40,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(runCmd, startCmd, stopCmd, psCmd)
+	rootCmd.AddCommand(runCmd, startCmd, stopCmd, psCmd, logsCmd)
 }
 
 func Connect(*cobra.Command, []string) {

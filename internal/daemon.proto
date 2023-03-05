@@ -85,6 +85,16 @@ message PsContainersRes {
   repeated ContainerInfo containers = 3;
 }
 
+message LogsContainerReq {
+  string containerId = 1;
+}
+
+message LogsContainerRes {
+  Status Status = 1;
+  string Msg = 2;
+  bytes logs = 3;
+}
+
 service daemon {
   rpc Ping(PingReq) returns(PingRes);
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
@@ -92,4 +102,5 @@ service daemon {
   rpc StartContainer(StartContainersReq) returns(StartContainersRes);
   rpc StopContainer(StopContainersReq) returns(StopContainersRes);
   rpc PsContainer(PsContainersReq) returns(PsContainersRes);
+  rpc LogsContainer(LogsContainerReq) returns(LogsContainerRes);
 }

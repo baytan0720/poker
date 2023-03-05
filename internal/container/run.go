@@ -49,6 +49,7 @@ func Run(containerId string) (string, error) {
 		},
 	}
 
+	// generate a random port for pty
 	ttyPort := generateRandomPort()
 
 	l, err := net.Listen("tcp", ":"+ttyPort)

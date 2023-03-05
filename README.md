@@ -20,7 +20,7 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 >
 > logs	Fetch the logs of a container
 >
-> ps	List containers
+> ps	List containers✅
 >
 > rename	Rename a container
 >
@@ -30,22 +30,18 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 >
 > rmi	Remove one or more images
 >
-> run	Run a command in a new container
+> run	Run a command in a new container✅
 >
-> start	Start one or more stopped containers
+> start Start one or more stopped containers✅
 >
-> stop	Stop one or more running containers
+> stop	Stop one or more running containers✅
 >
 > top	Display the running processes of a container
->
-> version	Show the Docker version information
->
-> daemon	A daemon for create and manage containers
 >
 
 ### Poker-daemon commands: 
 
-> start	Start the daemon
+> start	Start the daemon✅
 >
 > stop	Stop if daemon is running
 >

@@ -28,7 +28,7 @@ func (d *Daemon) CreateContainer(_ context.Context, req *service.CreateContainer
 	return res, nil
 }
 
-func (d *Daemon) RunContainer(ctx context.Context, req *service.RunContainerReq) (*service.RunContainerRes, error) {
+func (d *Daemon) RunContainer(_ context.Context, req *service.RunContainerReq) (*service.RunContainerRes, error) {
 	log.Println("run container", req.ContainerId)
 	res := &service.RunContainerRes{}
 	ptyPort, err := container.Run(req.ContainerId)
@@ -40,21 +40,21 @@ func (d *Daemon) RunContainer(ctx context.Context, req *service.RunContainerReq)
 	return res, nil
 }
 
-func (d *Daemon) StartContainer(ctx context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
+func (d *Daemon) StartContainer(_ context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
 	log.Println("start containers", strings.Join(req.ContainerIds, " "))
 	return &service.StartContainersRes{
 		StartNStopContainerInfo: container.Start(req.ContainerIds),
 	}, nil
 }
 
-func (d *Daemon) StopContainer(ctx context.Context, req *service.StopContainersReq) (*service.StopContainersRes, error) {
+func (d *Daemon) StopContainer(_ context.Context, req *service.StopContainersReq) (*service.StopContainersRes, error) {
 	log.Println("start containers", strings.Join(req.ContainerIds, " "))
 	return &service.StopContainersRes{
 		StartNStopContainerInfo: container.Stop(req.ContainerIds),
 	}, nil
 }
 
-func (d *Daemon) PsContainer(ctx context.Context, req *service.PsContainersReq) (*service.PsContainersRes, error) {
+func (d *Daemon) PsContainer(context.Context, *service.PsContainersReq) (*service.PsContainersRes, error) {
 	res := &service.PsContainersRes{}
 	log.Println("ps containers")
 	containers, err := container.Ps()
@@ -63,5 +63,17 @@ func (d *Daemon) PsContainer(ctx context.Context, req *service.PsContainersReq) 
 		res.Msg = err.Error()
 	}
 	res.Containers = containers
+	return res, nil
+}
+
+func (d *Daemon) LogsContainer(_ context.Context, req *service.LogsContainerReq) (*service.LogsContainerRes, error) {
+	res := &service.LogsContainerRes{}
+	log.Println("logs containers", req.ContainerId)
+	logs, err := container.Logs(req.ContainerId)
+	if err != nil {
+		res.Status = 1
+		res.Msg = err.Error()
+	}
+	res.Logs = logs
 	return res, nil
 }
