@@ -13,10 +13,10 @@ const (
 	CONTAINER_FOLDER_PATH = "/var/lib/poker/containers/"
 )
 
-// find container id
-func find(containerId string) (string, error) {
+// find container path
+func findPath(containerId string) (string, error) {
 	if len(containerId) == MAX_CONTAINERID {
-		return containerId, nil
+		return CONTAINER_FOLDER_PATH + containerId, nil
 	}
 	pattern := CONTAINER_FOLDER_PATH + containerId + "*"
 	matchs, err := filepath.Glob(pattern)

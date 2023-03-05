@@ -13,17 +13,16 @@ import (
 
 func Start(containerIds []string) []*service.StartNStopContainerInfo {
 	start := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, id := range containerIds {
-		start[i] = &service.StartNStopContainerInfo{ContainerId: id}
+	for i, containerId := range containerIds {
+		start[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
 
 		// check container id
-		containerId, err := find(id)
+		containerPath, err := findPath(containerId)
 		if err != nil {
 			start[i].Status = 1
 			start[i].Msg = err.Error()
 			continue
 		}
-		containerPath := CONTAINER_FOLDER_PATH + containerId
 		metadataFilePath := containerPath + "/metadata.json"
 
 		// read metadata
@@ -60,7 +59,7 @@ func Start(containerIds []string) []*service.StartNStopContainerInfo {
 		}
 
 		// bind log to stdout
-		logFilePath := CONTAINER_FOLDER_PATH + containerId + "/stdout.log"
+		logFilePath := containerPath + "/stdout.log"
 		f, err := logs.OpenLogs(logFilePath)
 		if err != nil {
 			start[i].Status = 1

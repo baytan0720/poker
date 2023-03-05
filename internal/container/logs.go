@@ -2,12 +2,12 @@ package container
 
 import "poker/internal/logs"
 
-func Logs(id string) ([]byte, error) {
-	containerId, err := find(id)
+func Logs(containerId string) ([]byte, error) {
+	containerPath, err := findPath(containerId)
 	if err != nil {
 		return nil, err
 	}
 
-	logFilePath := CONTAINER_FOLDER_PATH + containerId
+	logFilePath := containerPath + "/stdout.log"
 	return logs.ReadLogs(logFilePath)
 }

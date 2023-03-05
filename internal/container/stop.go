@@ -12,7 +12,7 @@ func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 		stop[i] = &service.StartNStopContainerInfo{ContainerId: id}
 
 		// check container id
-		containerId, err := find(id)
+		containerId, err := findPath(id)
 		if err != nil {
 			stop[i].Status = 1
 			stop[i].Msg = err.Error()
