@@ -5,7 +5,6 @@ import (
 	"os/exec"
 	"poker/internal/metadata"
 	"syscall"
-	"time"
 )
 
 // exec command args...
@@ -21,17 +20,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	meta.State.Status = "Running"
-	meta.State.Start = time.Now()
-	if err := metadata.WriteMetadata(metadataPath, meta); err != nil {
-		panic(err)
-	}
 
 	// init
 	command := os.Args[1]
 	args := os.Args[2:]
 	rootfsPath := containerPath + "rootfs"
-	if err := syscall.Sethostname([]byte("container")); err != nil {
+	if err := syscall.Sethostname([]byte(meta.Name)); err != nil {
 		panic(err)
 	}
 	if err := syscall.Chroot(rootfsPath); err != nil {

@@ -2,7 +2,7 @@
 
 ## 将要实现的功能
 
-Commands:
+Poker commands:
 
 ​	build	Build an image from a Dockerfile
 
@@ -34,7 +34,7 @@ Commands:
 
 ​	daemon	A daemon for create and manage containers
 
-daemon Commands: 
+Poker-daemon commands: 
 
 ​	start	Start the daemon
 

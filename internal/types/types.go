@@ -12,7 +12,7 @@ type ContainerMetadata struct {
 }
 
 type State struct {
-	Status string    `json:"status"` // Running/Stopped
+	Status string    `json:"status"` // Running/Exited
 	Pid    int       `json:"pid"`
 	Error  string    `json:"error"`
 	Start  time.Time `json:"start"`

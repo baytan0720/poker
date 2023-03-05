@@ -103,5 +103,6 @@ func makeMetadata(id, name, image, command string) *types.ContainerMetadata {
 		Image:   image,
 		Created: time.Now(),
 		Command: command,
+		State:   types.State{Status: "Created"},
 	}
 }

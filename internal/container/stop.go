@@ -4,6 +4,7 @@ import (
 	"poker/internal/metadata"
 	"poker/internal/service"
 	"syscall"
+	"time"
 )
 
 func Stop(containerIds []string) []*service.StartNStopContainerInfo {
@@ -22,7 +23,7 @@ func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 		}
 
 		// check container status
-		if meta.State.Status == "Stop" || meta.State.Status == "Exited" {
+		if meta.State.Status == "Exited" {
 			continue
 		}
 
@@ -33,6 +34,11 @@ func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 			stop[i].Msg = err.Error()
 			continue
 		}
+
+		// update metadata
+		meta.State.Finish = time.Now()
+		meta.State.Status = "Exited"
+		_ = metadata.WriteMetadata(metadataFilePath, meta)
 	}
 
 	return stop

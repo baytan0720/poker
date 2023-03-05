@@ -28,10 +28,22 @@ func (d *Daemon) CreateContainer(_ context.Context, req *service.CreateContainer
 	return res, nil
 }
 
+func (d *Daemon) RunContainer(ctx context.Context, req *service.RunContainerReq) (*service.RunContainerRes, error) {
+	log.Println("run container", req.ContainerId)
+	res := &service.RunContainerRes{}
+	ptyPort, err := container.Run(req.ContainerId)
+	if err != nil {
+		res.Status = 1
+		res.Msg = err.Error()
+	}
+	res.PtyPort = ptyPort
+	return res, nil
+}
+
 func (d *Daemon) StartContainer(ctx context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
 	log.Println("start containers", strings.Join(req.ContainerIds, " "))
 	return &service.StartContainersRes{
-		StartNStopContainerInfo: container.Run(req.ContainerIds),
+		StartNStopContainerInfo: container.Start(req.ContainerIds),
 	}, nil
 }
 

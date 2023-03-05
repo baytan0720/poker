@@ -26,6 +26,16 @@ message CreateContainerRes {
   string ContainerId = 3;
 }
 
+message RunContainerReq {
+  string ContainerId = 1;
+}
+
+message RunContainerRes {
+  Status Status = 1;
+  string Msg = 2;
+  string PtyPort = 3;
+}
+
 message StartNStopContainerInfo {
   Status Status = 1;
   string Msg = 2;
@@ -51,6 +61,7 @@ message StopContainersRes {
 service daemon {
   rpc Ping(PingReq) returns(PingRes);
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
+  rpc RunContainer(RunContainerReq) returns(RunContainerRes);
   rpc StartContainer(StartContainersReq) returns(StartContainersRes);
   rpc StopContainer(StopContainersReq) returns(StopContainersRes);
 }

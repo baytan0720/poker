@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type DaemonClient interface {
 	Ping(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error)
 	CreateContainer(ctx context.Context, in *CreateContainerReq, opts ...grpc.CallOption) (*CreateContainerRes, error)
+	RunContainer(ctx context.Context, in *RunContainerReq, opts ...grpc.CallOption) (*RunContainerRes, error)
 	StartContainer(ctx context.Context, in *StartContainersReq, opts ...grpc.CallOption) (*StartContainersRes, error)
 	StopContainer(ctx context.Context, in *StopContainersReq, opts ...grpc.CallOption) (*StopContainersRes, error)
 }
@@ -54,6 +55,15 @@ func (c *daemonClient) CreateContainer(ctx context.Context, in *CreateContainerR
 	return out, nil
 }
 
+func (c *daemonClient) RunContainer(ctx context.Context, in *RunContainerReq, opts ...grpc.CallOption) (*RunContainerRes, error) {
+	out := new(RunContainerRes)
+	err := c.cc.Invoke(ctx, "/service.daemon/RunContainer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *daemonClient) StartContainer(ctx context.Context, in *StartContainersReq, opts ...grpc.CallOption) (*StartContainersRes, error) {
 	out := new(StartContainersRes)
 	err := c.cc.Invoke(ctx, "/service.daemon/StartContainer", in, out, opts...)
@@ -78,6 +88,7 @@ func (c *daemonClient) StopContainer(ctx context.Context, in *StopContainersReq,
 type DaemonServer interface {
 	Ping(context.Context, *PingReq) (*PingRes, error)
 	CreateContainer(context.Context, *CreateContainerReq) (*CreateContainerRes, error)
+	RunContainer(context.Context, *RunContainerReq) (*RunContainerRes, error)
 	StartContainer(context.Context, *StartContainersReq) (*StartContainersRes, error)
 	StopContainer(context.Context, *StopContainersReq) (*StopContainersRes, error)
 	mustEmbedUnimplementedDaemonServer()
@@ -92,6 +103,9 @@ func (UnimplementedDaemonServer) Ping(context.Context, *PingReq) (*PingRes, erro
 }
 func (UnimplementedDaemonServer) CreateContainer(context.Context, *CreateContainerReq) (*CreateContainerRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateContainer not implemented")
+}
+func (UnimplementedDaemonServer) RunContainer(context.Context, *RunContainerReq) (*RunContainerRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RunContainer not implemented")
 }
 func (UnimplementedDaemonServer) StartContainer(context.Context, *StartContainersReq) (*StartContainersRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StartContainer not implemented")
@@ -148,6 +162,24 @@ func _Daemon_CreateContainer_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Daemon_RunContainer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RunContainerReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DaemonServer).RunContainer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.daemon/RunContainer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DaemonServer).RunContainer(ctx, req.(*RunContainerReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Daemon_StartContainer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StartContainersReq)
 	if err := dec(in); err != nil {
@@ -198,6 +230,10 @@ var Daemon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateContainer",
 			Handler:    _Daemon_CreateContainer_Handler,
+		},
+		{
+			MethodName: "RunContainer",
+			Handler:    _Daemon_RunContainer_Handler,
 		},
 		{
 			MethodName: "StartContainer",
