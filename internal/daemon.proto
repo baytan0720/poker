@@ -58,6 +58,21 @@ message StopContainersRes {
   repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
 }
 
+message ContainerInfo {
+  string Id = 1;
+  string Image = 2;
+  string Command = 3;
+  string Created = 4;
+  string Status = 5;
+  string Names = 6;
+}
+
+message PsContainersReq {}
+
+message PsContainerRes {
+
+}
+
 service daemon {
   rpc Ping(PingReq) returns(PingRes);
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);

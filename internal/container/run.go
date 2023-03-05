@@ -74,7 +74,20 @@ func Run(containerId string) (string, error) {
 			return
 		}
 
-		// TODO: wait exec exit
+		// wait cmd exit
+		err := cmd.Wait()
+
+		meta.State.Finish = time.Now()
+
+		if err != nil {
+			meta.State.Error = err.Error()
+		}
+		meta.State.Status = "Exited"
+
+		if err := metadata.WriteMetadata(metadataFilePath, meta); err != nil {
+			log.Println(err)
+			return
+		}
 	}()
 
 	return ttyPort, nil

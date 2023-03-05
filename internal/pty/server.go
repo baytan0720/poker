@@ -1,12 +1,13 @@
 package pty
 
 import (
-	"github.com/creack/pty"
-	"golang.org/x/term"
 	"io"
 	"net"
 	"os"
 	"os/exec"
+
+	"github.com/creack/pty"
+	"golang.org/x/term"
 )
 
 // NewTty tty is true terminal
@@ -25,11 +26,17 @@ func NewTty(l net.Listener, cmd *exec.Cmd) error {
 	}
 
 	go func() {
+		defer ptmx.Close()
 		conn, err := l.Accept()
 		if err != nil {
 			return
 		}
-		go func() { _, _ = io.Copy(ptmx, conn) }()
+		defer conn.Close()
+
+		go func() {
+			_, _ = io.Copy(ptmx, conn)
+			return
+		}()
 		_, _ = io.Copy(conn, ptmx)
 	}()
 
