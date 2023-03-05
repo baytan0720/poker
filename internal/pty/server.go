@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"syscall"
 
 	"github.com/creack/pty"
 	"golang.org/x/term"
@@ -34,7 +35,12 @@ func NewTty(l net.Listener, cmd *exec.Cmd) error {
 		defer conn.Close()
 
 		go func() {
-			_, _ = io.Copy(ptmx, conn)
+			_, err := io.Copy(ptmx, conn)
+			// if user exit pty but not use exit, kill it
+			if err == nil {
+				// log.Println("kill", cmd.Process.Pid)
+				syscall.Kill(cmd.Process.Pid, syscall.SIGKILL)
+			}
 			return
 		}()
 		_, _ = io.Copy(conn, ptmx)

@@ -25,7 +25,7 @@ func Run(containerId string) (string, error) {
 	}
 
 	// check container status
-	if meta.State.Status == "running" {
+	if meta.State.Status == "Running" {
 		return "", errors.New("the container is running")
 	}
 
@@ -74,11 +74,9 @@ func Run(containerId string) (string, error) {
 			return
 		}
 
-		// wait cmd exit
+		// wait cmd to exit
 		err := cmd.Wait()
-
 		meta.State.Finish = time.Now()
-
 		if err != nil {
 			meta.State.Error = err.Error()
 		}
