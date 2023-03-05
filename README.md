@@ -1,42 +1,46 @@
 # Poker
 
-## 将要实现的功能
+看似神奇的Docker，实际上只是执行了Linux的System Calls，这力量本不属于Docker，Linux赋予其魔力
 
-Poker commands:
+The seemingly magical Docker actually only executes Linux's system calls. This power does not belong to Docker, Linux gives it magic.
 
-​	build	Build an image from a Dockerfile
+## The functions to be realized(将要实现的功能)
 
-​	exec	Run a command in a running container
+**Poker commands:**
 
-​	images	List images
+build	Build an image from a Dockerfile
 
-​	logs	Fetch the logs of a container
+exec	Run a command in a running container
 
-​	ps	List containers
+images	List images
 
-​	rename	Rename a container
+logs	Fetch the logs of a container
 
-​	restart	Restart one or more containers
+ps	List containers
 
-​	rm	Remove one or more containers
+rename	Rename a container
 
-​	rmi	Remove one or more images
+restart	Restart one or more containers
 
-​	run	Run a command in a new container
+rm	Remove one or more containers
 
-​	start	Start one or more stopped containers
+rmi	Remove one or more images
 
-​	stop	Stop one or more running containers
+run	Run a command in a new container
 
-​	top	Display the running processes of a container
+start	Start one or more stopped containers
 
-​	version	Show the Docker version information
+stop	Stop one or more running containers
 
-​	daemon	A daemon for create and manage containers
+top	Display the running processes of a container
 
-Poker-daemon commands: 
+version	Show the Docker version information
 
-​	start	Start the daemon
+daemon	A daemon for create and manage containers
 
-​	stop	Stop if daemon is running
+**Poker-daemon commands:** 
+
+start	Start the daemon
+
+stop	Stop if daemon is running
 
