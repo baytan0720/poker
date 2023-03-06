@@ -8,17 +8,16 @@ import (
 
 func Stop(containerIds []string) []*service.StartNStopContainerInfo {
 	stop := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, id := range containerIds {
-		stop[i] = &service.StartNStopContainerInfo{ContainerId: id}
+	for i, containerId := range containerIds {
+		stop[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
 
 		// check container id
-		containerId, err := findPath(id)
+		containerPath, err := findPath(containerId)
 		if err != nil {
 			stop[i].Status = 1
 			stop[i].Msg = err.Error()
 			continue
 		}
-		containerPath := CONTAINER_FOLDER_PATH + containerId
 		metadataFilePath := containerPath + "/metadata.json"
 
 		// read metadata

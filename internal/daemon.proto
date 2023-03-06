@@ -58,6 +58,14 @@ message StopContainersRes {
   repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
 }
 
+message RestartContainersReq {
+  repeated string ContainerIds = 1;
+}
+
+message RestartContainersRes {
+  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
+}
+
 message ContainerInfo {
   string Id = 1;
   string Name = 2;
@@ -101,6 +109,7 @@ service daemon {
   rpc RunContainer(RunContainerReq) returns(RunContainerRes);
   rpc StartContainer(StartContainersReq) returns(StartContainersRes);
   rpc StopContainer(StopContainersReq) returns(StopContainersRes);
+  rpc RestartContainer(RestartContainersReq) returns(RestartContainersRes);
   rpc PsContainer(PsContainersReq) returns(PsContainersRes);
   rpc LogsContainer(LogsContainerReq) returns(LogsContainerRes);
 }

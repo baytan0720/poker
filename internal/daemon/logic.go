@@ -54,6 +54,13 @@ func (d *Daemon) StopContainer(_ context.Context, req *service.StopContainersReq
 	}, nil
 }
 
+func (d *Daemon) RestartContainer(_ context.Context, req *service.RestartContainersReq) (*service.RestartContainersRes, error) {
+	log.Println("restart containers", req.ContainerIds)
+	return &service.RestartContainersRes{
+		StartNStopContainerInfo: container.Restart(req.ContainerIds),
+	}, nil
+}
+
 func (d *Daemon) PsContainer(context.Context, *service.PsContainersReq) (*service.PsContainersRes, error) {
 	res := &service.PsContainersRes{}
 	log.Println("ps containers")

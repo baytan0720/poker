@@ -18,7 +18,7 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 >
 > images	List images
 >
-> logs	Fetch the logs of a container
+> logs	Fetch the logs of a container✅
 >
 > ps	List containers✅
 >

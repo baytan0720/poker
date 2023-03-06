@@ -1015,6 +1015,100 @@ func (x *LogsContainerRes) GetLogs() []byte {
 	return nil
 }
 
+type RestartContainersReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ContainerIds []string `protobuf:"bytes,1,rep,name=ContainerIds,proto3" json:"ContainerIds,omitempty"`
+}
+
+func (x *RestartContainersReq) Reset() {
+	*x = RestartContainersReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_daemon_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RestartContainersReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestartContainersReq) ProtoMessage() {}
+
+func (x *RestartContainersReq) ProtoReflect() protoreflect.Message {
+	mi := &file_daemon_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestartContainersReq.ProtoReflect.Descriptor instead.
+func (*RestartContainersReq) Descriptor() ([]byte, []int) {
+	return file_daemon_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *RestartContainersReq) GetContainerIds() []string {
+	if x != nil {
+		return x.ContainerIds
+	}
+	return nil
+}
+
+type RestartContainersRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StartNStopContainerInfo []*StartNStopContainerInfo `protobuf:"bytes,1,rep,name=StartNStopContainerInfo,proto3" json:"StartNStopContainerInfo,omitempty"`
+}
+
+func (x *RestartContainersRes) Reset() {
+	*x = RestartContainersRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_daemon_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *RestartContainersRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestartContainersRes) ProtoMessage() {}
+
+func (x *RestartContainersRes) ProtoReflect() protoreflect.Message {
+	mi := &file_daemon_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestartContainersRes.ProtoReflect.Descriptor instead.
+func (*RestartContainersRes) Descriptor() ([]byte, []int) {
+	return file_daemon_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *RestartContainersRes) GetStartNStopContainerInfo() []*StartNStopContainerInfo {
+	if x != nil {
+		return x.StartNStopContainerInfo
+	}
+	return nil
+}
+
 var File_daemon_proto protoreflect.FileDescriptor
 
 var file_daemon_proto_rawDesc = []byte{
@@ -1111,9 +1205,20 @@ var file_daemon_proto_rawDesc = []byte{
 	0x0f, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73,
 	0x52, 0x06, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x4d, 0x73, 0x67, 0x18,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x4d, 0x73, 0x67, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x6f,
-	0x67, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x6c, 0x6f, 0x67, 0x73, 0x2a, 0x1b,
+	0x67, 0x73, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x6c, 0x6f, 0x67, 0x73, 0x22, 0x3a,
+	0x0a, 0x14, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e,
+	0x65, 0x72, 0x73, 0x52, 0x65, 0x71, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69,
+	0x6e, 0x65, 0x72, 0x49, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x0c, 0x43, 0x6f,
+	0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x49, 0x64, 0x73, 0x22, 0x72, 0x0a, 0x14, 0x52, 0x65,
+	0x73, 0x74, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x73, 0x52,
+	0x65, 0x73, 0x12, 0x5a, 0x0a, 0x17, 0x53, 0x74, 0x61, 0x72, 0x74, 0x4e, 0x53, 0x74, 0x6f, 0x70,
+	0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x53, 0x74,
+	0x61, 0x72, 0x74, 0x4e, 0x53, 0x74, 0x6f, 0x70, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65,
+	0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x17, 0x53, 0x74, 0x61, 0x72, 0x74, 0x4e, 0x53, 0x74, 0x6f,
+	0x70, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x2a, 0x1b,
 	0x0a, 0x06, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x06, 0x0a, 0x02, 0x4f, 0x6b, 0x10, 0x00,
-	0x12, 0x09, 0x0a, 0x05, 0x4e, 0x6f, 0x74, 0x4f, 0x6b, 0x10, 0x01, 0x32, 0xe4, 0x03, 0x0a, 0x06,
+	0x12, 0x09, 0x0a, 0x05, 0x4e, 0x6f, 0x74, 0x4f, 0x6b, 0x10, 0x01, 0x32, 0xb6, 0x04, 0x0a, 0x06,
 	0x64, 0x61, 0x65, 0x6d, 0x6f, 0x6e, 0x12, 0x2a, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x10,
 	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71,
 	0x1a, 0x10, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x52,
@@ -1144,8 +1249,13 @@ var file_daemon_proto_rawDesc = []byte{
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x4c, 0x6f, 0x67, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x61,
 	0x69, 0x6e, 0x65, 0x72, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
 	0x65, 0x2e, 0x4c, 0x6f, 0x67, 0x73, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x52,
-	0x65, 0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x12, 0x50, 0x0a, 0x10, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6e,
+	0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x12, 0x1d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x2e, 0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65,
+	0x72, 0x73, 0x52, 0x65, 0x71, 0x1a, 0x1d, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2e,
+	0x52, 0x65, 0x73, 0x74, 0x61, 0x72, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72,
+	0x73, 0x52, 0x65, 0x73, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1161,7 +1271,7 @@ func file_daemon_proto_rawDescGZIP() []byte {
 }
 
 var file_daemon_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_daemon_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_daemon_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_daemon_proto_goTypes = []interface{}{
 	(Status)(0),                     // 0: service.Status
 	(*PingReq)(nil),                 // 1: service.PingReq
@@ -1181,6 +1291,8 @@ var file_daemon_proto_goTypes = []interface{}{
 	(*PsContainersRes)(nil),         // 15: service.PsContainersRes
 	(*LogsContainerReq)(nil),        // 16: service.LogsContainerReq
 	(*LogsContainerRes)(nil),        // 17: service.LogsContainerRes
+	(*RestartContainersReq)(nil),    // 18: service.RestartContainersReq
+	(*RestartContainersRes)(nil),    // 19: service.RestartContainersRes
 }
 var file_daemon_proto_depIdxs = []int32{
 	0,  // 0: service.PingRes.Status:type_name -> service.Status
@@ -1193,25 +1305,28 @@ var file_daemon_proto_depIdxs = []int32{
 	0,  // 7: service.PsContainersRes.Status:type_name -> service.Status
 	12, // 8: service.PsContainersRes.containers:type_name -> service.ContainerInfo
 	0,  // 9: service.LogsContainerRes.Status:type_name -> service.Status
-	1,  // 10: service.daemon.Ping:input_type -> service.PingReq
-	3,  // 11: service.daemon.CreateContainer:input_type -> service.CreateContainerReq
-	5,  // 12: service.daemon.RunContainer:input_type -> service.RunContainerReq
-	8,  // 13: service.daemon.StartContainer:input_type -> service.StartContainersReq
-	10, // 14: service.daemon.StopContainer:input_type -> service.StopContainersReq
-	14, // 15: service.daemon.PsContainer:input_type -> service.PsContainersReq
-	16, // 16: service.daemon.LogsContainer:input_type -> service.LogsContainerReq
-	2,  // 17: service.daemon.Ping:output_type -> service.PingRes
-	4,  // 18: service.daemon.CreateContainer:output_type -> service.CreateContainerRes
-	6,  // 19: service.daemon.RunContainer:output_type -> service.RunContainerRes
-	9,  // 20: service.daemon.StartContainer:output_type -> service.StartContainersRes
-	11, // 21: service.daemon.StopContainer:output_type -> service.StopContainersRes
-	15, // 22: service.daemon.PsContainer:output_type -> service.PsContainersRes
-	17, // 23: service.daemon.LogsContainer:output_type -> service.LogsContainerRes
-	17, // [17:24] is the sub-list for method output_type
-	10, // [10:17] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	7,  // 10: service.RestartContainersRes.StartNStopContainerInfo:type_name -> service.StartNStopContainerInfo
+	1,  // 11: service.daemon.Ping:input_type -> service.PingReq
+	3,  // 12: service.daemon.CreateContainer:input_type -> service.CreateContainerReq
+	5,  // 13: service.daemon.RunContainer:input_type -> service.RunContainerReq
+	8,  // 14: service.daemon.StartContainer:input_type -> service.StartContainersReq
+	10, // 15: service.daemon.StopContainer:input_type -> service.StopContainersReq
+	14, // 16: service.daemon.PsContainer:input_type -> service.PsContainersReq
+	16, // 17: service.daemon.LogsContainer:input_type -> service.LogsContainerReq
+	18, // 18: service.daemon.RestartContainer:input_type -> service.RestartContainersReq
+	2,  // 19: service.daemon.Ping:output_type -> service.PingRes
+	4,  // 20: service.daemon.CreateContainer:output_type -> service.CreateContainerRes
+	6,  // 21: service.daemon.RunContainer:output_type -> service.RunContainerRes
+	9,  // 22: service.daemon.StartContainer:output_type -> service.StartContainersRes
+	11, // 23: service.daemon.StopContainer:output_type -> service.StopContainersRes
+	15, // 24: service.daemon.PsContainer:output_type -> service.PsContainersRes
+	17, // 25: service.daemon.LogsContainer:output_type -> service.LogsContainerRes
+	19, // 26: service.daemon.RestartContainer:output_type -> service.RestartContainersRes
+	19, // [19:27] is the sub-list for method output_type
+	11, // [11:19] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_daemon_proto_init() }
@@ -1424,6 +1539,30 @@ func file_daemon_proto_init() {
 				return nil
 			}
 		}
+		file_daemon_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RestartContainersReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_daemon_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RestartContainersRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1431,7 +1570,7 @@ func file_daemon_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_daemon_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   17,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
