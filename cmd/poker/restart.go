@@ -5,7 +5,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"poker/alert"
 	"poker/internal/service"
 
@@ -14,14 +13,9 @@ import (
 
 // restartCmd represents the restart command
 var restartCmd = &cobra.Command{
-	Use:   "restart CONTAINER [CONTAINER...]",
-	Short: "Restart one or more containers",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			alert.Error(errors.New("enter at least one container"))
-		}
-		return nil
-	},
+	Use:    "restart CONTAINER [CONTAINER...]",
+	Short:  "Restart one or more containers",
+	Args:   cobra.MinimumNArgs(1),
 	Run:    restart,
 	PreRun: Connect,
 }

@@ -17,6 +17,7 @@ import (
 var psCmd = &cobra.Command{
 	Use:    "ps",
 	Short:  "List containers",
+	Args:   cobra.NoArgs,
 	Run:    ps,
 	PreRun: Connect,
 }
@@ -27,7 +28,7 @@ func init() {
 	psCmd.Flags().BoolP("detail", "d", false, "More Detail of container")
 }
 
-func ps(cmd *cobra.Command, args []string) {
+func ps(cmd *cobra.Command, _ []string) {
 	r, err := client.PsContainer(context.Background(), &service.PsContainersReq{})
 	checkErr(int32(r.Status), r.Msg, err)
 

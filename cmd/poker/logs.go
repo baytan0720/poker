@@ -5,7 +5,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"github.com/spf13/cobra"
 	"poker/alert"
 	"poker/internal/service"
@@ -13,14 +12,9 @@ import (
 
 // logsCmd represents the logs command
 var logsCmd = &cobra.Command{
-	Use:   "logs CONTAINER",
-	Short: "Fetch the logs of a container",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			alert.Error(errors.New("enter a container"))
-		}
-		return nil
-	},
+	Use:    "logs CONTAINER",
+	Short:  "Fetch the logs of a container",
+	Args:   cobra.ExactArgs(1),
 	Run:    logs,
 	PreRun: Connect,
 }

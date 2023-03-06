@@ -17,17 +17,9 @@ import (
 
 // runCmd represents the run command
 var runCmd = &cobra.Command{
-	Use:   "run IMAGE [COMMAND] [ARG...]",
-	Short: "Run a command in a new container",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			alert.Error(errors.New("enter a container, try base"))
-		}
-		if args[0] != "base" {
-			alert.Error(errors.New("image not found, try base"))
-		}
-		return nil
-	},
+	Use:    "run IMAGE [COMMAND] [ARG...]",
+	Short:  "Run a command in a new container",
+	Args:   cobra.MinimumNArgs(1),
 	Run:    run,
 	PreRun: Connect,
 }
@@ -44,11 +36,14 @@ func run(cmd *cobra.Command, args []string) {
 	interactive, _ := cmd.Flags().GetBool("interactive")
 	tty, _ := cmd.Flags().GetBool("tty")
 	detach, _ := cmd.Flags().GetBool("detach")
-	if len(name) > 16 {
+	if len(name) > 16 || name == "" {
 		alert.Error(errors.New("name is too long, the max length is 16"))
 	}
 	if tty && detach {
 		alert.Error(errors.New("tty and detach can only choose one"))
+	}
+	if args[0] != "base" {
+		alert.Error(errors.New("image not found, try base"))
 	}
 
 	command := strings.Join(args[1:], " ")

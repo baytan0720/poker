@@ -5,7 +5,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"poker/alert"
 	"poker/internal/service"
 
@@ -14,14 +13,9 @@ import (
 
 // stopCmd represents the stop command
 var stopCmd = &cobra.Command{
-	Use:   "stop CONTAINER [CONTAINER...]",
-	Short: "Stop one or more running containers",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			alert.Error(errors.New("enter at least one container"))
-		}
-		return nil
-	},
+	Use:    "stop CONTAINER [CONTAINER...]",
+	Short:  "Stop one or more running containers",
+	Args:   cobra.MinimumNArgs(1),
 	Run:    stop,
 	PreRun: Connect,
 }

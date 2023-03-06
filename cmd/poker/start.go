@@ -5,7 +5,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"poker/alert"
 	"poker/internal/service"
 
@@ -14,14 +13,9 @@ import (
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
-	Use:   "start CONTAINER [CONTAINER...]",
-	Short: "Start one or more exited containers",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			alert.Error(errors.New("enter at least one container"))
-		}
-		return nil
-	},
+	Use:    "start CONTAINER [CONTAINER...]",
+	Short:  "Start one or more exited containers",
+	Args:   cobra.MinimumNArgs(1),
 	Run:    start,
 	PreRun: Connect,
 }
