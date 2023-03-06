@@ -46,6 +46,7 @@ func findPath(containerId string) (string, error) {
 	return matchs[0], nil
 }
 
+// check if the name is available
 func checkNameAvailable(name string) error {
 	if name == "" {
 		return nil
@@ -59,9 +60,12 @@ func checkNameAvailable(name string) error {
 	return nil
 }
 
+// Check whether the incoming arg is a name.
+// If it is, return the container ID.
+// If not, return the incoming arg.
 func checkName(containerIdOrName string) string {
 	// if length = MAX_CONTAINERID, it must be container id
-	if len(containerIdOrName) == MAX_CONTAINERID {
+	if len(containerIdOrName) >= 16 {
 		return containerIdOrName
 	}
 
