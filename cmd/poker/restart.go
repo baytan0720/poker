@@ -27,18 +27,18 @@ var restartCmd = &cobra.Command{
 }
 
 func restart(_ *cobra.Command, args []string) {
-	r, err := client.RestartContainer(context.Background(), &service.RestartContainersReq{ContainerIds: args})
+	r, err := client.RestartContainer(context.Background(), &service.RestartContainersReq{ContainerIdsOrNames: args})
 	if err != nil {
 		alert.Error(err)
 	}
 	for _, info := range r.StartNStopContainerInfo {
 		if info.Status == 0 {
-			alert.Print(info.ContainerId + " ")
+			alert.Print(info.ContainerIdOrName + " ")
 		}
 	}
 	for _, info := range r.StartNStopContainerInfo {
 		if info.Status != 0 {
-			alert.Warn(info.ContainerId + ": " + info.Msg)
+			alert.Warn(info.ContainerIdOrName + ": " + info.Msg)
 		}
 	}
 }

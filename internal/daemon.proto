@@ -39,11 +39,11 @@ message RunContainerRes {
 message StartNStopContainerInfo {
   Status Status = 1;
   string Msg = 2;
-  string ContainerId = 3;
+  string ContainerIdOrName = 3;
 }
 
 message StartContainersReq {
-  repeated string ContainerIds = 1;
+  repeated string ContainerIdsOrNames = 1;
 }
 
 message StartContainersRes {
@@ -51,7 +51,7 @@ message StartContainersRes {
 }
 
 message StopContainersReq {
-  repeated string ContainerIds = 1;
+  repeated string ContainerIdsOrNames = 1;
 }
 
 message StopContainersRes {
@@ -59,7 +59,7 @@ message StopContainersRes {
 }
 
 message RestartContainersReq {
-  repeated string ContainerIds = 1;
+  repeated string ContainerIdsOrNames = 1;
 }
 
 message RestartContainersRes {
@@ -94,7 +94,7 @@ message PsContainersRes {
 }
 
 message LogsContainerReq {
-  string containerId = 1;
+  string containerIdOrName = 1;
 }
 
 message LogsContainerRes {

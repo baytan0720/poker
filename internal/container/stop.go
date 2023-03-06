@@ -6,12 +6,13 @@ import (
 	"syscall"
 )
 
-func Stop(containerIds []string) []*service.StartNStopContainerInfo {
-	stop := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, containerId := range containerIds {
-		stop[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
+func Stop(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
+	stop := make([]*service.StartNStopContainerInfo, len(containerIdsOrNames))
+	for i, containerIdOrName := range containerIdsOrNames {
+		stop[i] = &service.StartNStopContainerInfo{ContainerIdOrName: containerIdOrName}
 
 		// check container id
+		containerId := checkName(containerIdOrName)
 		containerPath, err := findPath(containerId)
 		if err != nil {
 			stop[i].Status = 1

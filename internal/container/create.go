@@ -18,6 +18,10 @@ func CreateContainer(image, command, name string) (string, error) {
 	MetadataFilePath := containerPath + "/metadata.json"
 	ExecFilePath := containerPath + "/exec"
 
+	if err := checkNameAvailable(name); err != nil {
+		return "", err
+	}
+
 	// move image to container rootfs
 	if err := copyFileOrDir(imageFilePath, rootfsPath); err != nil {
 		return "", err

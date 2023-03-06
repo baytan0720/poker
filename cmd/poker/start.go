@@ -26,19 +26,19 @@ var startCmd = &cobra.Command{
 	PreRun: Connect,
 }
 
-func start(cmd *cobra.Command, args []string) {
-	r, err := client.StartContainer(context.Background(), &service.StartContainersReq{ContainerIds: args})
+func start(_ *cobra.Command, args []string) {
+	r, err := client.StartContainer(context.Background(), &service.StartContainersReq{ContainerIdsOrNames: args})
 	if err != nil {
 		alert.Error(err)
 	}
 	for _, info := range r.StartNStopContainerInfo {
 		if info.Status == 0 {
-			alert.Print(info.ContainerId + " ")
+			alert.Print(info.ContainerIdOrName + " ")
 		}
 	}
 	for _, info := range r.StartNStopContainerInfo {
 		if info.Status != 0 {
-			alert.Warn(info.ContainerId + ": " + info.Msg)
+			alert.Warn(info.ContainerIdOrName + ": " + info.Msg)
 		}
 	}
 }

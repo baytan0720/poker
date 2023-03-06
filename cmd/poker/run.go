@@ -44,6 +44,9 @@ func run(cmd *cobra.Command, args []string) {
 	interactive, _ := cmd.Flags().GetBool("interactive")
 	tty, _ := cmd.Flags().GetBool("tty")
 	detach, _ := cmd.Flags().GetBool("detach")
+	if len(name) > 16 {
+		alert.Error(errors.New("name is too long, the max length is 16"))
+	}
 	if tty && detach {
 		alert.Error(errors.New("tty and detach can only choose one"))
 	}
@@ -60,7 +63,7 @@ func run(cmd *cobra.Command, args []string) {
 
 	if detach {
 		r, err := client.StartContainer(context.Background(), &service.StartContainersReq{
-			ContainerIds: []string{containerId},
+			ContainerIdsOrNames: []string{containerId},
 		})
 		if err != nil {
 			alert.Error(err)

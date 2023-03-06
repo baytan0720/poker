@@ -11,12 +11,13 @@ import (
 	"time"
 )
 
-func Start(containerIds []string) []*service.StartNStopContainerInfo {
-	start := make([]*service.StartNStopContainerInfo, len(containerIds))
-	for i, containerId := range containerIds {
-		start[i] = &service.StartNStopContainerInfo{ContainerId: containerId}
+func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
+	start := make([]*service.StartNStopContainerInfo, len(containerIdsOrNames))
+	for i, containerIdOrName := range containerIdsOrNames {
+		start[i] = &service.StartNStopContainerInfo{ContainerIdOrName: containerIdOrName}
 
 		// check container id
+		containerId := checkName(containerIdOrName)
 		containerPath, err := findPath(containerId)
 		if err != nil {
 			start[i].Status = 1

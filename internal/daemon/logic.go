@@ -41,23 +41,23 @@ func (d *Daemon) RunContainer(_ context.Context, req *service.RunContainerReq) (
 }
 
 func (d *Daemon) StartContainer(_ context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
-	log.Println("start containers", strings.Join(req.ContainerIds, " "))
+	log.Println("start containers", strings.Join(req.ContainerIdsOrNames, " "))
 	return &service.StartContainersRes{
-		StartNStopContainerInfo: container.Start(req.ContainerIds),
+		StartNStopContainerInfo: container.Start(req.ContainerIdsOrNames),
 	}, nil
 }
 
 func (d *Daemon) StopContainer(_ context.Context, req *service.StopContainersReq) (*service.StopContainersRes, error) {
-	log.Println("start containers", strings.Join(req.ContainerIds, " "))
+	log.Println("start containers", strings.Join(req.ContainerIdsOrNames, " "))
 	return &service.StopContainersRes{
-		StartNStopContainerInfo: container.Stop(req.ContainerIds),
+		StartNStopContainerInfo: container.Stop(req.ContainerIdsOrNames),
 	}, nil
 }
 
 func (d *Daemon) RestartContainer(_ context.Context, req *service.RestartContainersReq) (*service.RestartContainersRes, error) {
-	log.Println("restart containers", req.ContainerIds)
+	log.Println("restart containers", req.ContainerIdsOrNames)
 	return &service.RestartContainersRes{
-		StartNStopContainerInfo: container.Restart(req.ContainerIds),
+		StartNStopContainerInfo: container.Restart(req.ContainerIdsOrNames),
 	}, nil
 }
 
@@ -75,8 +75,8 @@ func (d *Daemon) PsContainer(context.Context, *service.PsContainersReq) (*servic
 
 func (d *Daemon) LogsContainer(_ context.Context, req *service.LogsContainerReq) (*service.LogsContainerRes, error) {
 	res := &service.LogsContainerRes{}
-	log.Println("logs containers", req.ContainerId)
-	logs, err := container.Logs(req.ContainerId)
+	log.Println("logs containers", req.ContainerIdOrName)
+	logs, err := container.Logs(req.ContainerIdOrName)
 	if err != nil {
 		res.Status = 1
 		res.Msg = err.Error()

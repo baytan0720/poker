@@ -2,7 +2,8 @@ package container
 
 import "poker/internal/logs"
 
-func Logs(containerId string) ([]byte, error) {
+func Logs(containerIdOrName string) ([]byte, error) {
+	containerId := checkName(containerIdOrName)
 	containerPath, err := findPath(containerId)
 	if err != nil {
 		return nil, err
