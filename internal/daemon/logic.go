@@ -84,3 +84,14 @@ func (d *Daemon) LogsContainer(_ context.Context, req *service.LogsContainerReq)
 	res.Logs = logs
 	return res, nil
 }
+
+func (d *Daemon) RenameContainer(_ context.Context, req *service.RenameContainerReq) (*service.RenameContainerRes, error) {
+	res := &service.RenameContainerRes{}
+	log.Println("rename", req.NewName, "container", req.ContainerIdOrName)
+	err := container.Rename(req.ContainerIdOrName, req.NewName)
+	if err != nil {
+		res.Status = 1
+		res.Msg = err.Error()
+	}
+	return res, nil
+}

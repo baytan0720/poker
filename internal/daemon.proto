@@ -103,6 +103,16 @@ message LogsContainerRes {
   bytes logs = 3;
 }
 
+message RenameContainerReq {
+  string containerIdOrName = 1;
+  string NewName = 2;
+}
+
+message RenameContainerRes {
+  Status Status = 1;
+  string Msg = 2;
+}
+
 service daemon {
   rpc Ping(PingReq) returns(PingRes);
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
@@ -112,4 +122,5 @@ service daemon {
   rpc RestartContainer(RestartContainersReq) returns(RestartContainersRes);
   rpc PsContainer(PsContainersReq) returns(PsContainersRes);
   rpc LogsContainer(LogsContainerReq) returns(LogsContainerRes);
+  rpc RenameContainer(RenameContainerReq) returns(RenameContainerRes);
 }
