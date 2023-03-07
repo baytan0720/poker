@@ -21,6 +21,6 @@ var logsCmd = &cobra.Command{
 
 func logs(_ *cobra.Command, args []string) {
 	r, err := client.LogsContainer(context.Background(), &service.LogsContainerReq{ContainerIdOrName: args[0]})
-	checkErr(int32(r.Status), r.Msg, err)
+	checkErr(r.Answer, err)
 	alert.Println(string(r.Logs))
 }

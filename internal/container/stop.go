@@ -1,31 +1,19 @@
 package container
 
 import (
-	"poker/internal/metadata"
 	"poker/internal/service"
 	"syscall"
 )
 
-func Stop(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
-	stop := make([]*service.StartNStopContainerInfo, len(containerIdsOrNames))
+func Stop(containerIdsOrNames []string) []*service.Answer {
+	answers := make([]*service.Answer, len(containerIdsOrNames))
 	for i, containerIdOrName := range containerIdsOrNames {
-		stop[i] = &service.StartNStopContainerInfo{ContainerIdOrName: containerIdOrName}
-
-		// check container id
-		containerId := checkName(containerIdOrName)
-		containerPath, err := findPath(containerId)
+		answers[i] = &service.Answer{ContainerIdOrName: containerIdOrName}
+		// check container
+		_, _, _, meta, err := checkContainer(containerIdOrName)
 		if err != nil {
-			stop[i].Status = 1
-			stop[i].Msg = err.Error()
-			continue
-		}
-		metadataFilePath := containerPath + "/metadata.json"
-
-		// read metadata
-		meta, err := metadata.ReadMetadata(metadataFilePath)
-		if err != nil {
-			stop[i].Status = 1
-			stop[i].Msg = err.Error()
+			answers[i].Status = 1
+			answers[i].Msg = err.Error()
 			continue
 		}
 
@@ -37,11 +25,15 @@ func Stop(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 		// kill the container
 		err = syscall.Kill(meta.State.Pid, syscall.SIGKILL)
 		if err != nil {
-			stop[i].Status = 1
-			stop[i].Msg = err.Error()
+			answers[i].Status = 1
+			answers[i].Msg = err.Error()
 			continue
 		}
+
+		// need not update metadata.json,
+		// when run or start,
+		// it will "wait()" cmd exit
 	}
 
-	return stop
+	return answers
 }

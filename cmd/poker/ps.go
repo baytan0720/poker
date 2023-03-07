@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"poker/alert"
 	"poker/internal/service"
@@ -30,7 +31,13 @@ func init() {
 
 func ps(cmd *cobra.Command, _ []string) {
 	r, err := client.PsContainer(context.Background(), &service.PsContainersReq{})
-	checkErr(int32(r.Status), r.Msg, err)
+	if err != nil {
+		alert.Error(err)
+	}
+
+	if r.Status != 0 {
+		alert.Error(errors.New(r.Msg))
+	}
 
 	all, _ := cmd.Flags().GetBool("all")
 	quiet, _ := cmd.Flags().GetBool("quiet")

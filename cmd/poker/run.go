@@ -52,39 +52,25 @@ func run(cmd *cobra.Command, args []string) {
 		Name:    name,
 		Command: command,
 	})
-	checkErr(int32(r.Status), r.Msg, err)
+	checkErr(r.Answer, err)
 
-	containerId := r.ContainerId
+	containerId := r.Answer.ContainerIdOrName
 
 	if detach {
 		r, err := client.StartContainer(context.Background(), &service.StartContainersReq{
 			ContainerIdsOrNames: []string{containerId},
 		})
-		if err != nil {
-			alert.Error(err)
-		}
-		if r.StartNStopContainerInfo[0].Status != 0 {
-			alert.Error(errors.New(r.StartNStopContainerInfo[0].Msg))
-		}
+		checkErr(r.Answers[0], err)
 		alert.Println(containerId)
 		return
 	}
 
 	r2, err := client.RunContainer(context.Background(), &service.RunContainerReq{ContainerId: containerId})
-	checkErr(int32(r2.Status), r2.Msg, err)
+	checkErr(r.Answer, err)
 
 	conn, err := net.Dial("tcp", ":"+r2.PtyPort)
 	if err != nil {
 		alert.Error(err)
 	}
 	pty.NewPty(conn, interactive)
-}
-
-func checkErr(status int32, msg string, err error) {
-	if err != nil {
-		alert.Error(err)
-	}
-	if status != 0 {
-		alert.Error(errors.New(msg))
-	}
 }

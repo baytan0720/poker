@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/exec"
+	"path/filepath"
 	"poker/internal/metadata"
 	"syscall"
 )
@@ -15,11 +16,11 @@ func main() {
 	}
 
 	containerPath := os.Args[0][:91]
-	metadataPath := containerPath + "metadata.json"
+	metadataPath := filepath.Join(containerPath, "metadata.json")
 	command := os.Args[1]
 	args := os.Args[2:]
 	hostname := "container"
-	rootfsPath := containerPath + "rootfs"
+	rootfsPath := filepath.Join(containerPath, "rootfs")
 
 	// read metadata
 	if meta, err := metadata.ReadMetadata(metadataPath); err == nil {

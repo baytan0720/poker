@@ -3,6 +3,7 @@ package metadata
 import (
 	jsoniter "github.com/json-iterator/go"
 	"os"
+	"path/filepath"
 	"poker/internal/types"
 )
 
@@ -52,7 +53,7 @@ func ReadAll(src string) ([]*types.ContainerMetadata, error) {
 	}
 	metas := make([]*types.ContainerMetadata, 0, len(entry))
 	for _, v := range entry {
-		metadataFilePath := src + v.Name() + "/metadata.json"
+		metadataFilePath := filepath.Join(src, v.Name(), "metadata.json")
 		meta, err := ReadMetadata(metadataFilePath)
 		if err != nil {
 			continue

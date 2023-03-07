@@ -25,14 +25,14 @@ func restart(_ *cobra.Command, args []string) {
 	if err != nil {
 		alert.Error(err)
 	}
-	for _, info := range r.StartNStopContainerInfo {
-		if info.Status == 0 {
-			alert.Print(info.ContainerIdOrName + " ")
+	for _, answer := range r.Answers {
+		if answer.Status == 0 {
+			alert.Print(answer.ContainerIdOrName + " ")
 		}
 	}
-	for _, info := range r.StartNStopContainerInfo {
-		if info.Status != 0 {
-			alert.Warn(info.ContainerIdOrName + ": " + info.Msg)
+	for _, answer := range r.Answers {
+		if answer.Status != 0 {
+			alert.Warn(answer.ContainerIdOrName + ": " + answer.Msg)
 		}
 	}
 }

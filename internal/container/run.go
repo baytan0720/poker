@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"poker/internal/metadata"
 	"poker/internal/pty"
 	"strconv"
@@ -15,8 +16,8 @@ import (
 )
 
 func Run(containerId string) (string, error) {
-	containerPath := CONTAINER_FOLDER_PATH + containerId
-	metadataFilePath := containerPath + "/metadata.json"
+	containerPath := filepath.Join(CONTAINER_FOLDER_PATH, containerId)
+	metadataFilePath := filepath.Join(containerPath, "metadata.json")
 
 	// read metadata
 	meta, err := metadata.ReadMetadata(metadataFilePath)
@@ -30,7 +31,7 @@ func Run(containerId string) (string, error) {
 	}
 
 	// isolate namespace
-	cmd := exec.Command(containerPath+"/exec", meta.Command)
+	cmd := exec.Command(filepath.Join(containerPath, "exec"), meta.Command)
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Cloneflags: syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS | syscall.CLONE_NEWNS | syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWUSER,
 		UidMappings: []syscall.SysProcIDMap{
@@ -85,7 +86,6 @@ func Run(containerId string) (string, error) {
 
 		if err := metadata.WriteMetadata(metadataFilePath, meta); err != nil {
 			log.Println(err)
-			return
 		}
 	}()
 

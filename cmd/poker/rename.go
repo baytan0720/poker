@@ -29,5 +29,5 @@ func rename(_ *cobra.Command, args []string) {
 		ContainerIdOrName: args[0],
 		NewName:           args[1],
 	})
-	checkErr(int32(r.Status), r.Msg, err)
+	checkErr(r.Answer, err)
 }

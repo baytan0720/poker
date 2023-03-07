@@ -12,11 +12,11 @@ import (
 // CreateContainer Create rootfs,metadata of new container
 func CreateContainer(image, command, name string) (string, error) {
 	containerId := generateRandomId(MAX_CONTAINERID)
-	imageFilePath := IMAGE_FOLDER_PATH + image
-	containerPath := CONTAINER_FOLDER_PATH + containerId
-	rootfsPath := containerPath + "/rootfs"
-	MetadataFilePath := containerPath + "/metadata.json"
-	ExecFilePath := containerPath + "/exec"
+	imageFilePath := filepath.Join(IMAGE_FOLDER_PATH, image)
+	containerPath := filepath.Join(CONTAINER_FOLDER_PATH, containerId)
+	rootfsPath := filepath.Join(containerPath, "rootfs")
+	MetadataFilePath := filepath.Join(containerPath, "metadata.json")
+	ExecFilePath := filepath.Join(containerPath, "exec")
 
 	if err := checkNameAvailable(name); err != nil {
 		return "", err

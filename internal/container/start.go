@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"poker/internal/logs"
 	"poker/internal/metadata"
 	"poker/internal/service"
@@ -11,26 +12,15 @@ import (
 	"time"
 )
 
-func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
-	start := make([]*service.StartNStopContainerInfo, len(containerIdsOrNames))
+func Start(containerIdsOrNames []string) []*service.Answer {
+	answers := make([]*service.Answer, len(containerIdsOrNames))
 	for i, containerIdOrName := range containerIdsOrNames {
-		start[i] = &service.StartNStopContainerInfo{ContainerIdOrName: containerIdOrName}
+		answers[i] = &service.Answer{ContainerIdOrName: containerIdOrName}
 
-		// check container id
-		containerId := checkName(containerIdOrName)
-		containerPath, err := findPath(containerId)
+		_, containerPath, metadataPath, meta, err := checkContainer(containerIdOrName)
 		if err != nil {
-			start[i].Status = 1
-			start[i].Msg = err.Error()
-			continue
-		}
-		metadataFilePath := containerPath + "/metadata.json"
-
-		// read metadata
-		meta, err := metadata.ReadMetadata(metadataFilePath)
-		if err != nil {
-			start[i].Status = 1
-			start[i].Msg = err.Error()
+			answers[i].Status = 1
+			answers[i].Msg = err.Error()
 			continue
 		}
 
@@ -40,7 +30,7 @@ func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 		}
 
 		// isolate namespace
-		cmd := exec.Command(containerPath+"/exec", meta.Command)
+		cmd := exec.Command(filepath.Join(containerPath, "exec"), meta.Command)
 		cmd.SysProcAttr = &syscall.SysProcAttr{
 			Cloneflags: syscall.CLONE_NEWPID | syscall.CLONE_NEWUTS | syscall.CLONE_NEWNS | syscall.CLONE_NEWIPC | syscall.CLONE_NEWNET | syscall.CLONE_NEWUSER,
 			UidMappings: []syscall.SysProcIDMap{
@@ -60,11 +50,11 @@ func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 		}
 
 		// bind log to stdout
-		logFilePath := containerPath + "/stdout.log"
+		logFilePath := filepath.Join(containerPath, "stdout.log")
 		f, err := logs.OpenLogs(logFilePath)
 		if err != nil {
-			start[i].Status = 1
-			start[i].Msg = err.Error()
+			answers[i].Status = 1
+			answers[i].Msg = err.Error()
 			continue
 		}
 		cmd.Stdout = f
@@ -72,8 +62,8 @@ func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 
 		// start cmd with non-block
 		if err := cmd.Start(); err != nil {
-			start[i].Status = 1
-			start[i].Msg = err.Error()
+			answers[i].Status = 1
+			answers[i].Msg = err.Error()
 			continue
 		}
 
@@ -83,7 +73,7 @@ func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 			meta.State.Status = "Running"
 			meta.State.Start = time.Now()
 			meta.State.Pid = cmd.Process.Pid
-			if err := metadata.WriteMetadata(metadataFilePath, meta); err != nil {
+			if err := metadata.WriteMetadata(metadataPath, meta); err != nil {
 				log.Println(err)
 			}
 
@@ -96,12 +86,11 @@ func Start(containerIdsOrNames []string) []*service.StartNStopContainerInfo {
 			}
 			meta.State.Status = "Exited"
 
-			if err := metadata.WriteMetadata(metadataFilePath, meta); err != nil {
+			if err := metadata.WriteMetadata(metadataPath, meta); err != nil {
 				log.Println(err)
-				return
 			}
 		}()
 	}
 
-	return start
+	return answers
 }

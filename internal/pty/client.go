@@ -19,14 +19,8 @@ func NewPty(conn net.Conn, interactive bool) {
 
 	if interactive {
 		go func() {
-			_, err := io.Copy(conn, os.Stdin)
-			if err != nil {
-				panic(err)
-			}
+			_, _ = io.Copy(conn, os.Stdin)
 		}()
 	}
-	_, err = io.Copy(os.Stdout, conn)
-	if err != nil {
-		panic(err)
-	}
+	_, _ = io.Copy(os.Stdout, conn)
 }

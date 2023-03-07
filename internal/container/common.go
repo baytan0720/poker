@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"path/filepath"
 	"poker/internal/metadata"
+	"poker/internal/types"
 )
 
 const (
 	ID_RAND_SOURCE        = "abcdefghijklmnopqrstuvwxyz0123456789"
 	NAME_RAND_SOURCE      = "abcdefghijklmnopqrstuvwxyz"
 	MAX_CONTAINERID       = 64
-	IMAGE_FOLDER_PATH     = "/var/lib/poker/images/"
-	CONTAINER_FOLDER_PATH = "/var/lib/poker/containers/"
+	IMAGE_FOLDER_PATH     = "/var/lib/poker/images"
+	CONTAINER_FOLDER_PATH = "/var/lib/poker/containers"
 )
 
 var nameToContainer = map[string]string{}
@@ -30,20 +31,20 @@ func init() {
 // find container path
 func findPath(containerId string) (string, error) {
 	if len(containerId) == MAX_CONTAINERID {
-		return CONTAINER_FOLDER_PATH + containerId, nil
+		return filepath.Join(CONTAINER_FOLDER_PATH, containerId), nil
 	}
-	pattern := CONTAINER_FOLDER_PATH + containerId + "*"
-	matchs, err := filepath.Glob(pattern)
+	pattern := filepath.Join(CONTAINER_FOLDER_PATH, containerId+"*")
+	matches, err := filepath.Glob(pattern)
 	if err != nil {
 		return "", err
 	}
-	if len(matchs) < 1 {
+	if len(matches) < 1 {
 		return "", errors.New("the container does not exist")
 	}
-	if len(matchs) > 1 {
+	if len(matches) > 1 {
 		return "", errors.New("the matching container num > 1")
 	}
-	return matchs[0], nil
+	return matches[0], nil
 }
 
 // check if the name is available
@@ -74,4 +75,24 @@ func checkName(containerIdOrName string) string {
 		return id
 	}
 	return containerIdOrName
+}
+
+// checkContainer return container id, container path and metadata
+func checkContainer(containerIdOrName string) (containerId, containerPath, metadataPath string, meta *types.ContainerMetadata, err error) {
+	// check container id
+	containerId = checkName(containerIdOrName)
+
+	containerPath, err = findPath(containerId)
+	if err != nil {
+		return
+	}
+	metadataPath = filepath.Join(containerPath, "metadata.json")
+
+	// read metadata
+	meta, err = metadata.ReadMetadata(metadataPath)
+	if err != nil {
+		return
+	}
+
+	return
 }

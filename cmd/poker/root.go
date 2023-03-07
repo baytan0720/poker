@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"os"
 	"poker/alert"
 	"poker/internal/service"
@@ -40,7 +41,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(runCmd, startCmd, stopCmd, psCmd, logsCmd, restartCmd, renameCmd)
+	rootCmd.AddCommand(runCmd, startCmd, stopCmd, psCmd, logsCmd, restartCmd, renameCmd, rmCmd)
 }
 
 func Connect(*cobra.Command, []string) {
@@ -52,5 +53,14 @@ func Connect(*cobra.Command, []string) {
 	client = service.NewDaemonClient(conn)
 	if res, err := client.Ping(context.Background(), &service.PingReq{}); err != nil || res.Status != 0 {
 		alert.Error(err)
+	}
+}
+
+func checkErr(answer *service.Answer, err error) {
+	if err != nil {
+		alert.Error(err)
+	}
+	if answer.Status != 0 {
+		alert.Error(errors.New(answer.Msg))
 	}
 }

@@ -1,6 +1,9 @@
 package container
 
-import "poker/internal/logs"
+import (
+	"path/filepath"
+	"poker/internal/logs"
+)
 
 func Logs(containerIdOrName string) ([]byte, error) {
 	containerId := checkName(containerIdOrName)
@@ -9,6 +12,6 @@ func Logs(containerIdOrName string) ([]byte, error) {
 		return nil, err
 	}
 
-	logFilePath := containerPath + "/stdout.log"
+	logFilePath := filepath.Join(containerPath, "stdout.log")
 	return logs.ReadLogs(logFilePath)
 }
