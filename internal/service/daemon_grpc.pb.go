@@ -31,6 +31,7 @@ type DaemonClient interface {
 	PsContainer(ctx context.Context, in *PsContainersReq, opts ...grpc.CallOption) (*PsContainersRes, error)
 	LogsContainer(ctx context.Context, in *LogsContainerReq, opts ...grpc.CallOption) (*LogsContainerRes, error)
 	RenameContainer(ctx context.Context, in *RenameContainerReq, opts ...grpc.CallOption) (*RenameContainerRes, error)
+	RemoveContainers(ctx context.Context, in *RemoveContainersReq, opts ...grpc.CallOption) (*RemoveContainersRes, error)
 }
 
 type daemonClient struct {
@@ -122,6 +123,15 @@ func (c *daemonClient) RenameContainer(ctx context.Context, in *RenameContainerR
 	return out, nil
 }
 
+func (c *daemonClient) RemoveContainers(ctx context.Context, in *RemoveContainersReq, opts ...grpc.CallOption) (*RemoveContainersRes, error) {
+	out := new(RemoveContainersRes)
+	err := c.cc.Invoke(ctx, "/service.daemon/RemoveContainers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DaemonServer is the server API for Daemon service.
 // All implementations must embed UnimplementedDaemonServer
 // for forward compatibility
@@ -135,6 +145,7 @@ type DaemonServer interface {
 	PsContainer(context.Context, *PsContainersReq) (*PsContainersRes, error)
 	LogsContainer(context.Context, *LogsContainerReq) (*LogsContainerRes, error)
 	RenameContainer(context.Context, *RenameContainerReq) (*RenameContainerRes, error)
+	RemoveContainers(context.Context, *RemoveContainersReq) (*RemoveContainersRes, error)
 	mustEmbedUnimplementedDaemonServer()
 }
 
@@ -168,6 +179,9 @@ func (UnimplementedDaemonServer) LogsContainer(context.Context, *LogsContainerRe
 }
 func (UnimplementedDaemonServer) RenameContainer(context.Context, *RenameContainerReq) (*RenameContainerRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RenameContainer not implemented")
+}
+func (UnimplementedDaemonServer) RemoveContainers(context.Context, *RemoveContainersReq) (*RemoveContainersRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveContainers not implemented")
 }
 func (UnimplementedDaemonServer) mustEmbedUnimplementedDaemonServer() {}
 
@@ -344,6 +358,24 @@ func _Daemon_RenameContainer_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Daemon_RemoveContainers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveContainersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DaemonServer).RemoveContainers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.daemon/RemoveContainers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DaemonServer).RemoveContainers(ctx, req.(*RemoveContainersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Daemon_ServiceDesc is the grpc.ServiceDesc for Daemon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -386,6 +418,10 @@ var Daemon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RenameContainer",
 			Handler:    _Daemon_RenameContainer_Handler,
+		},
+		{
+			MethodName: "RemoveContainers",
+			Handler:    _Daemon_RemoveContainers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

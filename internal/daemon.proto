@@ -8,64 +8,6 @@ enum Status {
   NotOk = 1;
 }
 
-message PingReq {}
-
-message PingRes {
-  Status Status = 1;
-}
-
-message CreateContainerReq {
-  string Image = 1;
-  string Command = 2;
-  string Name = 3;
-}
-
-message CreateContainerRes {
-  Status Status = 1;
-  string Msg = 2;
-  string ContainerId = 3;
-}
-
-message RunContainerReq {
-  string ContainerId = 1;
-}
-
-message RunContainerRes {
-  Status Status = 1;
-  string Msg = 2;
-  string PtyPort = 3;
-}
-
-message StartNStopContainerInfo {
-  Status Status = 1;
-  string Msg = 2;
-  string ContainerIdOrName = 3;
-}
-
-message StartContainersReq {
-  repeated string ContainerIdsOrNames = 1;
-}
-
-message StartContainersRes {
-  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
-}
-
-message StopContainersReq {
-  repeated string ContainerIdsOrNames = 1;
-}
-
-message StopContainersRes {
-  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
-}
-
-message RestartContainersReq {
-  repeated string ContainerIdsOrNames = 1;
-}
-
-message RestartContainersRes {
-  repeated StartNStopContainerInfo StartNStopContainerInfo = 1;
-}
-
 message ContainerInfo {
   string Id = 1;
   string Name = 2;
@@ -83,6 +25,61 @@ message State {
   int64 Finish = 5;
 }
 
+message Answer {
+  Status Status = 1;
+  string Msg = 2;
+  string ContainerIdOrName = 3;
+}
+
+message PingReq {}
+
+message PingRes {
+  Status Status = 1;
+}
+
+message CreateContainerReq {
+  string Image = 1;
+  string Command = 2;
+  string Name = 3;
+}
+
+message CreateContainerRes {
+  Answer Answer = 1;
+}
+
+message RunContainerReq {
+  string ContainerId = 1;
+}
+
+message RunContainerRes {
+  Answer Answer = 1;
+  string PtyPort = 2;
+}
+
+message StartContainersReq {
+  repeated string ContainerIdsOrNames = 1;
+}
+
+message StartContainersRes {
+  repeated Answer Answers = 1;
+}
+
+message StopContainersReq {
+  repeated string ContainerIdsOrNames = 1;
+}
+
+message StopContainersRes {
+  repeated Answer Answers = 1;
+}
+
+message RestartContainersReq {
+  repeated string ContainerIdsOrNames = 1;
+}
+
+message RestartContainersRes {
+  repeated Answer Answers = 1;
+}
+
 message PsContainersReq {
 
 }
@@ -98,8 +95,7 @@ message LogsContainerReq {
 }
 
 message LogsContainerRes {
-  Status Status = 1;
-  string Msg = 2;
+  Answer Answer = 1;
   bytes logs = 3;
 }
 
@@ -109,8 +105,15 @@ message RenameContainerReq {
 }
 
 message RenameContainerRes {
-  Status Status = 1;
-  string Msg = 2;
+  Answer Answer = 1;
+}
+
+message RemoveContainersReq {
+  repeated string ContainerIdsOrNames = 1;
+}
+
+message RemoveContainersRes {
+  repeated Answer Answers = 1;
 }
 
 service daemon {
@@ -123,4 +126,5 @@ service daemon {
   rpc PsContainer(PsContainersReq) returns(PsContainersRes);
   rpc LogsContainer(LogsContainerReq) returns(LogsContainerRes);
   rpc RenameContainer(RenameContainerReq) returns(RenameContainerRes);
+  rpc RemoveContainers(RemoveContainersReq) returns(RemoveContainersRes);
 }

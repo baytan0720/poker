@@ -26,7 +26,7 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 >
 > restart	Restart one or more containers✅
 >
-> rm	Remove one or more containers
+> rm	Remove one or more containers✅
 >
 > rmi	Remove one or more images
 >

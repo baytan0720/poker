@@ -19,11 +19,13 @@ func (d *Daemon) CreateContainer(_ context.Context, req *service.CreateContainer
 
 	id, err := container.CreateContainer(req.Image, req.Command, req.Name)
 	if err != nil {
-		res.Status = 1
-		res.Msg = err.Error()
+		res.Answer = &service.Answer{
+			Status: 1,
+			Msg:    err.Error(),
+		}
 		log.Println(err)
 	}
-	res.ContainerId = id
+	res.Answer = &service.Answer{ContainerIdOrName: id}
 
 	return res, nil
 }
@@ -33,8 +35,11 @@ func (d *Daemon) RunContainer(_ context.Context, req *service.RunContainerReq) (
 	res := &service.RunContainerRes{}
 	ptyPort, err := container.Run(req.ContainerId)
 	if err != nil {
-		res.Status = 1
-		res.Msg = err.Error()
+		res.Answer = &service.Answer{
+			Status: 1,
+			Msg:    err.Error(),
+		}
+		log.Println(err)
 	}
 	res.PtyPort = ptyPort
 	return res, nil
@@ -43,21 +48,21 @@ func (d *Daemon) RunContainer(_ context.Context, req *service.RunContainerReq) (
 func (d *Daemon) StartContainer(_ context.Context, req *service.StartContainersReq) (*service.StartContainersRes, error) {
 	log.Println("start containers", strings.Join(req.ContainerIdsOrNames, " "))
 	return &service.StartContainersRes{
-		StartNStopContainerInfo: container.Start(req.ContainerIdsOrNames),
+		Answers: container.Start(req.ContainerIdsOrNames),
 	}, nil
 }
 
 func (d *Daemon) StopContainer(_ context.Context, req *service.StopContainersReq) (*service.StopContainersRes, error) {
 	log.Println("start containers", strings.Join(req.ContainerIdsOrNames, " "))
 	return &service.StopContainersRes{
-		StartNStopContainerInfo: container.Stop(req.ContainerIdsOrNames),
+		Answers: container.Stop(req.ContainerIdsOrNames),
 	}, nil
 }
 
 func (d *Daemon) RestartContainer(_ context.Context, req *service.RestartContainersReq) (*service.RestartContainersRes, error) {
 	log.Println("restart containers", req.ContainerIdsOrNames)
 	return &service.RestartContainersRes{
-		StartNStopContainerInfo: container.Restart(req.ContainerIdsOrNames),
+		Answers: container.Restart(req.ContainerIdsOrNames),
 	}, nil
 }
 
@@ -78,8 +83,11 @@ func (d *Daemon) LogsContainer(_ context.Context, req *service.LogsContainerReq)
 	log.Println("logs containers", req.ContainerIdOrName)
 	logs, err := container.Logs(req.ContainerIdOrName)
 	if err != nil {
-		res.Status = 1
-		res.Msg = err.Error()
+		res.Answer = &service.Answer{
+			Status: 1,
+			Msg:    err.Error(),
+		}
+		log.Println(err)
 	}
 	res.Logs = logs
 	return res, nil
@@ -90,8 +98,18 @@ func (d *Daemon) RenameContainer(_ context.Context, req *service.RenameContainer
 	log.Println("rename", req.NewName, "container", req.ContainerIdOrName)
 	err := container.Rename(req.ContainerIdOrName, req.NewName)
 	if err != nil {
-		res.Status = 1
-		res.Msg = err.Error()
+		res.Answer = &service.Answer{
+			Status: 1,
+			Msg:    err.Error(),
+		}
+		log.Println(err)
 	}
 	return res, nil
+}
+
+func (d *Daemon) RemoveContainers(_ context.Context, req *service.RemoveContainersReq) (*service.RemoveContainersRes, error) {
+	log.Println("remove containers", strings.Join(req.ContainerIdsOrNames, " "))
+	return &service.RemoveContainersRes{
+		Answers: container.Remove(req.ContainerIdsOrNames),
+	}, nil
 }
