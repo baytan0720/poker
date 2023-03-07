@@ -22,7 +22,7 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 >
 > ps	List containers✅
 >
-> rename	Rename a container
+> rename	Rename a container✅
 >
 > restart	Restart one or more containers✅
 >
