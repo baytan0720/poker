@@ -23,7 +23,11 @@ func Rename(containerIdOrName, newName string) error {
 		return err
 	}
 
+	oldName := meta.Name
 	meta.Name = newName
+
+	// delete old name
+	delete(nameToContainer, oldName)
 
 	// update
 	err = metadata.WriteMetadata(metadataFilePath, meta)
