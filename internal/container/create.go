@@ -18,6 +18,9 @@ func CreateContainer(image, command, name string) (string, error) {
 	MetadataFilePath := filepath.Join(containerPath, "metadata.json")
 	ExecFilePath := filepath.Join(containerPath, "exec")
 
+	if name == "" {
+		name = generateRandomName()
+	}
 	if err := checkNameAvailable(name); err != nil {
 		return "", err
 	}
@@ -35,6 +38,10 @@ func CreateContainer(image, command, name string) (string, error) {
 	// write metadata
 	if err := metadata.WriteMetadata(MetadataFilePath, makeMetadata(containerId, name, image, command)); err != nil {
 		return "", err
+	}
+
+	if name != "" {
+		nameToContainer[name] = containerId
 	}
 
 	return containerId, nil
@@ -97,10 +104,6 @@ func generateRandomName() string {
 
 // Make metadata struct
 func makeMetadata(id, name, image, command string) *types.ContainerMetadata {
-	if name == "" {
-		name = generateRandomName()
-	}
-
 	return &types.ContainerMetadata{
 		Id:      id,
 		Name:    name,

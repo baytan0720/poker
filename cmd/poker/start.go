@@ -27,7 +27,7 @@ func start(_ *cobra.Command, args []string) {
 	}
 	for _, answer := range r.Answers {
 		if answer.Status == 0 {
-			alert.Print(answer.ContainerIdOrName + " ")
+			alert.Println(answer.ContainerIdOrName + " ")
 		}
 	}
 	for _, answer := range r.Answers {

@@ -73,6 +73,7 @@ func Start(containerIdsOrNames []string) []*service.Answer {
 			meta.State.Status = "Running"
 			meta.State.Start = time.Now()
 			meta.State.Pid = cmd.Process.Pid
+			meta.State.Error = ""
 			if err := metadata.WriteMetadata(metadataPath, meta); err != nil {
 				log.Println(err)
 			}

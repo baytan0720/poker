@@ -6,9 +6,10 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/spf13/cobra"
 	"poker/alert"
 	"poker/internal/service"
+
+	"github.com/spf13/cobra"
 )
 
 // renameCmd represents the rename command
@@ -30,4 +31,5 @@ func rename(_ *cobra.Command, args []string) {
 		NewName:           args[1],
 	})
 	checkErr(r.Answer, err)
+	alert.Println("Success.")
 }

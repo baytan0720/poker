@@ -36,7 +36,7 @@ func run(cmd *cobra.Command, args []string) {
 	interactive, _ := cmd.Flags().GetBool("interactive")
 	tty, _ := cmd.Flags().GetBool("tty")
 	detach, _ := cmd.Flags().GetBool("detach")
-	if len(name) > 16 || name == "" {
+	if len(name) > 16 {
 		alert.Error(errors.New("name is too long, the max length is 16"))
 	}
 	if tty && detach {

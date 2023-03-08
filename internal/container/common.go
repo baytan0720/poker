@@ -49,12 +49,6 @@ func findPath(containerId string) (string, error) {
 
 // check if the name is available
 func checkNameAvailable(name string) error {
-	if name == "" {
-		return nil
-	}
-	if len(name) > 16 {
-		return errors.New("name is too long")
-	}
 	if tmp, ok := nameToContainer[name]; ok {
 		return errors.New(fmt.Sprintf("The container name \"%s\" is already in use by container %s", name, tmp))
 	}
@@ -74,6 +68,7 @@ func checkName(containerIdOrName string) string {
 	if id, ok := nameToContainer[containerIdOrName]; ok {
 		return id
 	}
+
 	return containerIdOrName
 }
 

@@ -1,6 +1,9 @@
 package alert
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func Println(msg string) {
 	fmt.Println(msg)
@@ -12,7 +15,7 @@ func Print(msg string) {
 
 func Error(err error) {
 	fmt.Println("Error:", err.Error())
-	panic(err)
+	os.Exit(1)
 }
 
 func Warn(msg string) {

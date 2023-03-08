@@ -71,7 +71,7 @@ func printTitle() {
 }
 
 func printDetailTitle() {
-	fmt.Printf("CONTAINER ID\tIMAGE\tCOMMAND\t\tCREATED\t\tSTATUS\tNAME\t\tPID\tSTART\t\tFINISH\t\tERROR\n")
+	fmt.Printf("CONTAINER ID\tIMAGE\tCOMMAND\t\tCREATED\t\tSTATUS\tNAME\tPID\tSTART\t\tFINISH\t\tERROR\n")
 }
 
 func printPs(container *service.ContainerInfo) {
