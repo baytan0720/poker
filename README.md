@@ -39,10 +39,37 @@ The seemingly magical Docker actually only executes Linux's system calls. This p
 > top	Display the running processes of a container
 >
 
-### Poker-daemon commands: 
+### Poker-daemon:
 
-> start	Start the daemon✅
->
-> stop	Stop if daemon is running
->
+Future: use sysctl hosting
+
+### Use:
+
+```shell
+$ make
+$ poker -h
+Poker is a container technology as like docker
+
+Usage:
+  poker [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  logs        Fetch the logs of a container
+  ps          List containers
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  run         Run a command in a new container
+  start       Start one or more exited containers
+  stop        Stop one or more running containers
+
+Flags:
+  -h, --help      help for poker
+  -v, --version   version for poker
+
+Use "poker [command] --help" for more information about a command.
+
+```
 
