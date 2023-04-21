@@ -1,0 +1,11 @@
+# go module
+go.sum
+
+# image
+base
+
+# binary
+bin
+
+# protocol
+pkg/service
