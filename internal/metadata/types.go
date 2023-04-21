@@ -2,7 +2,7 @@ package metadata
 
 import "time"
 
-type Container struct {
+type Meta struct {
 	Id      string    `json:"id"`
 	Name    string    `json:"name"`
 	Image   string    `json:"image"`

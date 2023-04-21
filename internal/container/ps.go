@@ -6,7 +6,7 @@ import (
 )
 
 func Ps() ([]*service.ContainerInfo, error) {
-	metas, err := metadata.ReadAll(CONTAINER_FOLDER_PATH)
+	metas, err := metadata.ReadAll(CONTAINER_PATH)
 	if err != nil {
 		return nil, err
 	}

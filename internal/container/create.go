@@ -5,15 +5,14 @@ import (
 	"os"
 	"path/filepath"
 	"poker/internal/metadata"
-	"poker/internal/types"
 	"time"
 )
 
 // CreateContainer Create rootfs,metadata of new container
 func CreateContainer(image, command, name string) (string, error) {
 	containerId := generateRandomId(MAX_CONTAINERID)
-	imageFilePath := filepath.Join(IMAGE_FOLDER_PATH, image)
-	containerPath := filepath.Join(CONTAINER_FOLDER_PATH, containerId)
+	imageFilePath := filepath.Join(IMAGE_PATH, image)
+	containerPath := filepath.Join(CONTAINER_PATH, containerId)
 	rootfsPath := filepath.Join(containerPath, "rootfs")
 	MetadataFilePath := filepath.Join(containerPath, "metadata.json")
 	ExecFilePath := filepath.Join(containerPath, "exec")
@@ -47,16 +46,6 @@ func CreateContainer(image, command, name string) (string, error) {
 	return containerId, nil
 }
 
-// Generate a new ID, len = n
-func generateRandomId(n uint) string {
-	b := make([]byte, n)
-	length := len(ID_RAND_SOURCE)
-	for i := range b {
-		b[i] = ID_RAND_SOURCE[rand.Intn(length)]
-	}
-	return string(b)
-}
-
 // Copy File or Directory from src to dst
 func copyFileOrDir(src string, dst string) error {
 	info, err := os.Stat(src)
@@ -88,6 +77,16 @@ func copyFileOrDir(src string, dst string) error {
 	return nil
 }
 
+// Generate a new ID, len = n
+func generateRandomId(n uint) string {
+	b := make([]byte, n)
+	length := len(ID_RAND_SOURCE)
+	for i := range b {
+		b[i] = ID_RAND_SOURCE[rand.Intn(length)]
+	}
+	return string(b)
+}
+
 // Generate a random name
 func generateRandomName() string {
 	pre := make([]byte, 8)
@@ -103,13 +102,13 @@ func generateRandomName() string {
 }
 
 // Make metadata struct
-func makeMetadata(id, name, image, command string) *types.ContainerMetadata {
-	return &types.ContainerMetadata{
+func makeMetadata(id, name, image, command string) *metadata.Meta {
+	return &metadata.Meta{
 		Id:      id,
 		Name:    name,
 		Image:   image,
 		Created: time.Now(),
 		Command: command,
-		State:   types.State{Status: "Created"},
+		State:   metadata.State{Status: "Created"},
 	}
 }

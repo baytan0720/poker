@@ -16,7 +16,7 @@ import (
 )
 
 func Run(containerId string) (string, error) {
-	containerPath := filepath.Join(CONTAINER_FOLDER_PATH, containerId)
+	containerPath := filepath.Join(CONTAINER_PATH, containerId)
 	metadataFilePath := filepath.Join(containerPath, "metadata.json")
 
 	// read metadata

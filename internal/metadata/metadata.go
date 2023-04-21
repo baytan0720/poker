@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 )
 
-func encode(metadata *Container) ([]byte, error) {
+func encode(metadata *Meta) ([]byte, error) {
 	return json.Marshal(metadata)
 }
 
-func decode(data []byte) (*Container, error) {
-	metadata := &Container{}
+func decode(data []byte) (*Meta, error) {
+	metadata := &Meta{}
 	err := json.Unmarshal(data, metadata)
 	if err != nil {
 		return nil, err
@@ -20,7 +20,7 @@ func decode(data []byte) (*Container, error) {
 }
 
 // WriteMetadata write metadata
-func WriteMetadata(dst string, metadata *Container) error {
+func WriteMetadata(dst string, metadata *Meta) error {
 	// marshal to json
 	b, err := encode(metadata)
 	if err != nil {
@@ -36,7 +36,7 @@ func WriteMetadata(dst string, metadata *Container) error {
 }
 
 // ReadMetadata read metadata
-func ReadMetadata(src string) (*Container, error) {
+func ReadMetadata(src string) (*Meta, error) {
 	b, err := os.ReadFile(src)
 	if err != nil {
 		return nil, err
@@ -45,12 +45,12 @@ func ReadMetadata(src string) (*Container, error) {
 }
 
 // ReadAll read all metadata
-func ReadAll(src string) ([]*Container, error) {
+func ReadAll(src string) ([]*Meta, error) {
 	entry, err := os.ReadDir(src)
 	if err != nil {
 		return nil, err
 	}
-	metas := make([]*Container, 0, len(entry))
+	metas := make([]*Meta, 0, len(entry))
 	for _, v := range entry {
 		metadataFilePath := filepath.Join(src, v.Name(), "metadata.json")
 		meta, err := ReadMetadata(metadataFilePath)

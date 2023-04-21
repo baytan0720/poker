@@ -5,21 +5,12 @@ import (
 	"fmt"
 	"path/filepath"
 	"poker/internal/metadata"
-	"poker/internal/types"
-)
-
-const (
-	ID_RAND_SOURCE        = "abcdefghijklmnopqrstuvwxyz0123456789"
-	NAME_RAND_SOURCE      = "abcdefghijklmnopqrstuvwxyz"
-	MAX_CONTAINERID       = 64
-	IMAGE_FOLDER_PATH     = "/var/lib/poker/images"
-	CONTAINER_FOLDER_PATH = "/var/lib/poker/containers"
 )
 
 var nameToContainer = map[string]string{}
 
 func init() {
-	metas, err := metadata.ReadAll(CONTAINER_FOLDER_PATH)
+	metas, err := metadata.ReadAll(CONTAINER_PATH)
 	if err != nil {
 		panic(err)
 	}
@@ -31,9 +22,9 @@ func init() {
 // find container path
 func findPath(containerId string) (string, error) {
 	if len(containerId) == MAX_CONTAINERID {
-		return filepath.Join(CONTAINER_FOLDER_PATH, containerId), nil
+		return filepath.Join(CONTAINER_PATH, containerId), nil
 	}
-	pattern := filepath.Join(CONTAINER_FOLDER_PATH, containerId+"*")
+	pattern := filepath.Join(CONTAINER_PATH, containerId+"*")
 	matches, err := filepath.Glob(pattern)
 	if err != nil {
 		return "", err
@@ -73,7 +64,7 @@ func checkName(containerIdOrName string) string {
 }
 
 // checkContainer return container id, container path and metadata
-func checkContainer(containerIdOrName string) (containerId, containerPath, metadataPath string, meta *types.ContainerMetadata, err error) {
+func checkContainer(containerIdOrName string) (containerId, containerPath, metadataPath string, meta *metadata.Meta, err error) {
 	// check container id
 	containerId = checkName(containerIdOrName)
 
