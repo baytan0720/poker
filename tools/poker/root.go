@@ -1,20 +1,18 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
-package main
+package poker
 
 import (
-	"github.com/spf13/cobra"
 	"os"
-)
 
-const PORT = "10720"
+	"poker/tools/poker/command"
+
+	"github.com/spf13/cobra"
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "poker-daemon",
-	Short:   "A daemon for create and manage containers",
-	Long:    "Daemon is for Poker",
+	Use:     "poker",
+	Short:   "A container creation and running tool",
+	Long:    "Poker is a container technology as like docker",
 	Version: "v0.1",
 }
 
@@ -28,5 +26,5 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(StartCmd, StopCmd)
+	rootCmd.AddCommand(command.RunCmd, command.StartCmd, command.StopCmd, command.PsCmd, command.LogsCmd, command.RestartCmd, command.RenameCmd, command.RmCmd)
 }

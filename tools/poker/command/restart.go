@@ -1,27 +1,28 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package main
+package command
 
 import (
 	"context"
 	"poker/pkg/alert"
 	"poker/pkg/service"
+	"poker/tools/poker/util"
 
 	"github.com/spf13/cobra"
 )
 
-// startCmd represents the start command
-var startCmd = &cobra.Command{
-	Use:    "start CONTAINER [CONTAINER...]",
-	Short:  "Start one or more exited containers",
+// RestartCmd represents the restart command
+var RestartCmd = &cobra.Command{
+	Use:    "restart CONTAINER [CONTAINER...]",
+	Short:  "Restart one or more containers",
 	Args:   cobra.MinimumNArgs(1),
-	Run:    start,
-	PreRun: Connect,
+	Run:    restart,
+	PreRun: util.Connect,
 }
 
-func start(_ *cobra.Command, args []string) {
-	r, err := client.StartContainer(context.Background(), &service.StartContainersReq{ContainerIdsOrNames: args})
+func restart(_ *cobra.Command, args []string) {
+	r, err := util.Client.RestartContainer(context.Background(), &service.RestartContainersReq{ContainerIdsOrNames: args})
 	if err != nil {
 		alert.Error(err)
 	}

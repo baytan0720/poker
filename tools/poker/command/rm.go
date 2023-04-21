@@ -1,27 +1,28 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package main
+package command
 
 import (
 	"context"
 	"poker/pkg/alert"
 	"poker/pkg/service"
+	"poker/tools/poker/util"
 
 	"github.com/spf13/cobra"
 )
 
-// rmCmd represents the rm command
-var rmCmd = &cobra.Command{
+// RmCmd represents the rm command
+var RmCmd = &cobra.Command{
 	Use:    "rm CONTAINER [CONTAINER...]",
 	Short:  "Remove one or more containers",
 	Args:   cobra.MinimumNArgs(1),
 	Run:    rm,
-	PreRun: Connect,
+	PreRun: util.Connect,
 }
 
 func rm(_ *cobra.Command, args []string) {
-	r, err := client.RemoveContainers(context.Background(), &service.RemoveContainersReq{ContainerIdsOrNames: args})
+	r, err := util.Client.RemoveContainers(context.Background(), &service.RemoveContainersReq{ContainerIdsOrNames: args})
 	if err != nil {
 		alert.Error(err)
 	}

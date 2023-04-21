@@ -1,34 +1,35 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package main
+package command
 
 import (
 	"context"
 	"errors"
 	"net"
-	"poker/internal/pty"
 	"poker/pkg/alert"
+	"poker/pkg/pty"
 	"poker/pkg/service"
+	util2 "poker/tools/poker/util"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-// runCmd represents the run command
-var runCmd = &cobra.Command{
+// RunCmd represents the run command
+var RunCmd = &cobra.Command{
 	Use:    "run IMAGE [COMMAND] [ARG...]",
 	Short:  "Run a command in a new container",
 	Args:   cobra.MinimumNArgs(1),
 	Run:    run,
-	PreRun: Connect,
+	PreRun: util2.Connect,
 }
 
 func init() {
-	runCmd.Flags().StringP("name", "n", "", "Assign a name to the container")
-	runCmd.Flags().BoolP("interactive", "i", false, "Keep STDIN open even if not attached")
-	runCmd.Flags().BoolP("tty", "t", false, "Allocate a pseudo-TTY")
-	runCmd.Flags().BoolP("detach", "d", false, "Run container in background and print container ID")
+	RunCmd.Flags().StringP("name", "n", "", "Assign a name to the container")
+	RunCmd.Flags().BoolP("interactive", "i", false, "Keep STDIN open even if not attached")
+	RunCmd.Flags().BoolP("tty", "t", false, "Allocate a pseudo-TTY")
+	RunCmd.Flags().BoolP("detach", "d", false, "Run container in background and print container ID")
 }
 
 func run(cmd *cobra.Command, args []string) {
@@ -47,26 +48,26 @@ func run(cmd *cobra.Command, args []string) {
 	}
 
 	command := strings.Join(args[1:], " ")
-	r, err := client.CreateContainer(context.Background(), &service.CreateContainerReq{
+	r, err := util2.Client.CreateContainer(context.Background(), &service.CreateContainerReq{
 		Image:   args[0],
 		Name:    name,
 		Command: command,
 	})
-	checkErr(r.Answer, err)
+	util2.CheckErr(r.Answer, err)
 
 	containerId := r.Answer.ContainerIdOrName
 
 	if detach {
-		r, err := client.StartContainer(context.Background(), &service.StartContainersReq{
+		r, err := util2.Client.StartContainer(context.Background(), &service.StartContainersReq{
 			ContainerIdsOrNames: []string{containerId},
 		})
-		checkErr(r.Answers[0], err)
+		util2.CheckErr(r.Answers[0], err)
 		alert.Println(containerId)
 		return
 	}
 
-	r2, err := client.RunContainer(context.Background(), &service.RunContainerReq{ContainerId: containerId})
-	checkErr(r.Answer, err)
+	r2, err := util2.Client.RunContainer(context.Background(), &service.RunContainerReq{ContainerId: containerId})
+	util2.CheckErr(r.Answer, err)
 
 	conn, err := net.Dial("tcp", ":"+r2.PtyPort)
 	if err != nil {

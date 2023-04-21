@@ -1,7 +1,7 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package main
+package command
 
 import (
 	"context"
@@ -9,28 +9,29 @@ import (
 	"fmt"
 	"poker/pkg/alert"
 	"poker/pkg/service"
+	"poker/tools/poker/util"
 	"time"
 
 	"github.com/spf13/cobra"
 )
 
-// psCmd represents the ps command
-var psCmd = &cobra.Command{
+// PsCmd represents the ps command
+var PsCmd = &cobra.Command{
 	Use:    "ps",
 	Short:  "List containers",
 	Args:   cobra.NoArgs,
 	Run:    ps,
-	PreRun: Connect,
+	PreRun: util.Connect,
 }
 
 func init() {
-	psCmd.Flags().BoolP("all", "a", false, "Show all containers (default shows just running)")
-	psCmd.Flags().BoolP("quiet", "q", false, "Only display container IDs")
-	psCmd.Flags().BoolP("detail", "d", false, "More Detail of container")
+	PsCmd.Flags().BoolP("all", "a", false, "Show all containers (default shows just running)")
+	PsCmd.Flags().BoolP("quiet", "q", false, "Only display container IDs")
+	PsCmd.Flags().BoolP("detail", "d", false, "More Detail of container")
 }
 
 func ps(cmd *cobra.Command, _ []string) {
-	r, err := client.PsContainer(context.Background(), &service.PsContainersReq{})
+	r, err := util.Client.PsContainer(context.Background(), &service.PsContainersReq{})
 	if err != nil {
 		alert.Error(err)
 	}

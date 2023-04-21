@@ -1,7 +1,7 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
-package main
+package command
 
 import (
 	"poker/internal/daemon"
@@ -9,6 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 )
+
+const PORT = "10720"
 
 // StartCmd represents the start command
 var StartCmd = &cobra.Command{
