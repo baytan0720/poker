@@ -1,19 +1,18 @@
 package metadata
 
 import (
-	jsoniter "github.com/json-iterator/go"
+	"encoding/json"
 	"os"
 	"path/filepath"
-	"poker/internal/types"
 )
 
-func encodeMetadata(metadata *types.ContainerMetadata) ([]byte, error) {
-	return jsoniter.Marshal(metadata)
+func encode(metadata *Container) ([]byte, error) {
+	return json.Marshal(metadata)
 }
 
-func decodeMetadata(data []byte) (*types.ContainerMetadata, error) {
-	metadata := &types.ContainerMetadata{}
-	err := jsoniter.Unmarshal(data, metadata)
+func decode(data []byte) (*Container, error) {
+	metadata := &Container{}
+	err := json.Unmarshal(data, metadata)
 	if err != nil {
 		return nil, err
 	}
@@ -21,9 +20,9 @@ func decodeMetadata(data []byte) (*types.ContainerMetadata, error) {
 }
 
 // WriteMetadata write metadata
-func WriteMetadata(dst string, metadata *types.ContainerMetadata) error {
+func WriteMetadata(dst string, metadata *Container) error {
 	// marshal to json
-	b, err := encodeMetadata(metadata)
+	b, err := encode(metadata)
 	if err != nil {
 		return err
 	}
@@ -37,21 +36,21 @@ func WriteMetadata(dst string, metadata *types.ContainerMetadata) error {
 }
 
 // ReadMetadata read metadata
-func ReadMetadata(src string) (*types.ContainerMetadata, error) {
+func ReadMetadata(src string) (*Container, error) {
 	b, err := os.ReadFile(src)
 	if err != nil {
 		return nil, err
 	}
-	return decodeMetadata(b)
+	return decode(b)
 }
 
 // ReadAll read all metadata
-func ReadAll(src string) ([]*types.ContainerMetadata, error) {
+func ReadAll(src string) ([]*Container, error) {
 	entry, err := os.ReadDir(src)
 	if err != nil {
 		return nil, err
 	}
-	metas := make([]*types.ContainerMetadata, 0, len(entry))
+	metas := make([]*Container, 0, len(entry))
 	for _, v := range entry {
 		metadataFilePath := filepath.Join(src, v.Name(), "metadata.json")
 		meta, err := ReadMetadata(metadataFilePath)

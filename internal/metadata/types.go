@@ -1,8 +1,8 @@
-package types
+package metadata
 
 import "time"
 
-type ContainerMetadata struct {
+type Container struct {
 	Id      string    `json:"id"`
 	Name    string    `json:"name"`
 	Image   string    `json:"image"`
