@@ -3,6 +3,8 @@ syntax = "proto3";
 package service;
 option go_package="./service";
 
+// -----------const------------
+
 enum Status {
   Ok = 0;
   NotOk = 1;
@@ -30,6 +32,8 @@ message Answer {
   string Msg = 2;
   string ContainerIdOrName = 3;
 }
+
+// ------request & response------
 
 message PingReq {}
 
@@ -116,15 +120,28 @@ message RemoveContainersRes {
   repeated Answer Answers = 1;
 }
 
+// -----------service------------
+
 service daemon {
+  // ---------common---------
   rpc Ping(PingReq) returns(PingRes);
+
+  // ---------container---------
   rpc CreateContainer(CreateContainerReq) returns(CreateContainerRes);
+
   rpc RunContainer(RunContainerReq) returns(RunContainerRes);
+
   rpc StartContainer(StartContainersReq) returns(StartContainersRes);
+
   rpc StopContainer(StopContainersReq) returns(StopContainersRes);
+
   rpc RestartContainer(RestartContainersReq) returns(RestartContainersRes);
+
   rpc PsContainer(PsContainersReq) returns(PsContainersRes);
+
   rpc LogsContainer(LogsContainerReq) returns(LogsContainerRes);
+
   rpc RenameContainer(RenameContainerReq) returns(RenameContainerRes);
+
   rpc RemoveContainers(RemoveContainersReq) returns(RemoveContainersRes);
 }
