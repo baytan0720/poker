@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"poker/internal/metadata"
-	"poker/internal/pty"
+	"poker/pkg/pty"
 	"strconv"
 	"syscall"
 	"time"
