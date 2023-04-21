@@ -3,7 +3,7 @@ all: clean build install
 build:
 	go build -o bin/poker cmd/poker/*.go
 	go build -o bin/poker-daemon cmd/daemon/*.go
-	go build -o bin/exec internal/exec/exec.go
+	go build -o bin/exec cmd/exec/*.go
 
 install:
 	cp bin/poker /usr/bin/poker
