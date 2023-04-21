@@ -3,7 +3,7 @@ package daemon
 import (
 	"log"
 	"net"
-	"poker/internal/service"
+	"poker/pkg/service"
 
 	"google.golang.org/grpc"
 )

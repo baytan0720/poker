@@ -1,6 +1,8 @@
 package container
 
-import "poker/internal/service"
+import (
+	"poker/pkg/service"
+)
 
 func Restart(containerIdsOrNames []string) []*service.Answer {
 	stops := Stop(containerIdsOrNames)

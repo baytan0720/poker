@@ -4,8 +4,8 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package main
 
 import (
-	"poker/alert"
 	"poker/internal/daemon"
+	"poker/pkg/alert"
 
 	"github.com/spf13/cobra"
 )

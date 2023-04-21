@@ -7,9 +7,9 @@ import (
 	"context"
 	"errors"
 	"net"
-	"poker/alert"
 	"poker/internal/pty"
-	"poker/internal/service"
+	"poker/pkg/alert"
+	"poker/pkg/service"
 	"strings"
 
 	"github.com/spf13/cobra"

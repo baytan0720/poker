@@ -7,8 +7,8 @@ import (
 	"context"
 	"errors"
 	"os"
-	"poker/alert"
-	"poker/internal/service"
+	"poker/pkg/alert"
+	service2 "poker/pkg/service"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -21,7 +21,7 @@ const (
 	HOST     = "127.0.0.1:10720"
 )
 
-var client service.DaemonClient
+var client service2.DaemonClient
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -50,13 +50,13 @@ func Connect(*cobra.Command, []string) {
 	if err != nil {
 		alert.Error(err)
 	}
-	client = service.NewDaemonClient(conn)
-	if res, err := client.Ping(context.Background(), &service.PingReq{}); err != nil || res.Status != 0 {
+	client = service2.NewDaemonClient(conn)
+	if res, err := client.Ping(context.Background(), &service2.PingReq{}); err != nil || res.Status != 0 {
 		alert.Error(err)
 	}
 }
 
-func checkErr(answer *service.Answer, err error) {
+func checkErr(answer *service2.Answer, err error) {
 	if err != nil {
 		alert.Error(err)
 	}

@@ -6,8 +6,8 @@ package main
 import (
 	"context"
 	"github.com/spf13/cobra"
-	"poker/alert"
-	"poker/internal/service"
+	"poker/pkg/alert"
+	"poker/pkg/service"
 )
 
 // logsCmd represents the logs command

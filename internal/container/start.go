@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"poker/internal/logs"
 	"poker/internal/metadata"
-	"poker/internal/service"
+	"poker/pkg/service"
 	"syscall"
 	"time"
 )

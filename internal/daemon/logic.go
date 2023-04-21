@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"poker/internal/container"
-	"poker/internal/service"
+	"poker/pkg/service"
 	"strings"
 )
 

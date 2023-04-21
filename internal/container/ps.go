@@ -2,7 +2,7 @@ package container
 
 import (
 	"poker/internal/metadata"
-	"poker/internal/service"
+	"poker/pkg/service"
 )
 
 func Ps() ([]*service.ContainerInfo, error) {

@@ -7,8 +7,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"poker/alert"
-	"poker/internal/service"
+	"poker/pkg/alert"
+	"poker/pkg/service"
 	"time"
 
 	"github.com/spf13/cobra"

@@ -2,7 +2,7 @@ package container
 
 import (
 	"os"
-	"poker/internal/service"
+	"poker/pkg/service"
 )
 
 func Remove(containerIdsOrNames []string) []*service.Answer {

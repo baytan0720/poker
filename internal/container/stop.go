@@ -1,7 +1,7 @@
 package container
 
 import (
-	"poker/internal/service"
+	"poker/pkg/service"
 	"syscall"
 )
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"poker/internal/service"
+	"poker/pkg/service"
 	"testing"
 )
 

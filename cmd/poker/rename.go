@@ -6,8 +6,8 @@ package main
 import (
 	"context"
 	"errors"
-	"poker/alert"
-	"poker/internal/service"
+	"poker/pkg/alert"
+	"poker/pkg/service"
 
 	"github.com/spf13/cobra"
 )
