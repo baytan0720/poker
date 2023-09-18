@@ -1,11 +1,11 @@
+# ide
+.idea
+
 # go module
 go.sum
 
-# image
-base
-
 # binary
-bin
+sbin
 
 # protocol
-pkg/service
+pkg/proto

@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package proto;
+option go_package="./proto";
+
+message RunContainerReq {
+  string image = 1;
+  string command = 2;
+  repeated string args = 3;
+  bool tty = 4;
+  string name = 5; // optional
+  repeated string env = 6; // optional
+  repeated string exposed_ports = 7; // optional
+  string hostname = 8; // optional
+  string user = 9; // optional
+  string working_dir = 10; // optional
+  repeated string volumes= 11; // optional
+  bool read_only = 12; // optional
+  bool rm = 13; // optional
+  bool restart = 14; // optional
+}
+
+message RunContainerRes {
+  int64 error_code = 1;
+  string id = 2;
+  string socket_path = 3;
+}
+
+message StartContainerReq {
+  string id_or_name = 1;
+}
+
+message StartContainerRes {
+  int64 error_code = 1;
+}
+
+message StopContainerReq {
+  string id_or_name = 1;
+  int64 time_wait = 2;
+}
+
+message StopContainerRes {
+  int64 error_code = 1;
+}
+
+message RestartContainerReq {
+  string id_or_name = 1;
+  int64 time_wait = 2;
+}
+
+message RestartContainerRes {
+  int64 error_code = 1;
+}
+
+message RemoveContainerReq {
+  string id_or_name = 1;
+  bool force = 2;
+}
+
+message RemoveContainerRes {
+  int64 error_code = 1;
+}
+
+message ListContainerReq {}
+
+message ListContainerRes {
+  int64 error_code = 1;
+  bytes containers = 2;
+}
+
+message RenameContainerReq {
+  string id_or_name = 1;
+  string new_name = 2;
+}
+
+message RenameContainerRes {
+  int64 error_code = 1;
+}
+
+message InspectContainerReq {
+  string id_or_name = 1;
+}
+
+message InspectContainerRes {
+  int64 error_code = 1;
+  bytes container = 2;
+}
+
+message LogsContainerReq {
+  string id_or_name = 1;
+}
+
+message LogsContainerRes {
+  int64 error_code = 1;
+  bytes logs = 2;
+}
+
+message ExecContainerReq {
+  string id_or_name = 1;
+  string command = 2;
+  repeated string args = 3;
+  bool tty = 4;
+  repeated string env = 5;
+  string user = 6;
+  string working_dir = 7;
+}
+
+message ExecContainerRes {
+  int64 error_code = 1;
+  string socket_path = 2;
+}

@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package proto;
+option go_package="./proto";
+
+import "container.proto";
+
+message PingReq {}
+
+message PongRes {}
+
+message VersionReq {}
+
+message VersionRes {
+  string poker_version = 1;
+  string git_revision = 4;
+  string go_version = 2;
+  string build_time = 3;
+  // string api_version = 5;
+}
+
+service PokerService {
+  // poker
+  rpc Ping(PingReq) returns (PongRes);
+  rpc Version(VersionReq) returns (VersionRes);
+
+  // container
+  rpc RunContainer(RunContainerReq) returns (RunContainerRes);
+  rpc StartContainer(StartContainerReq) returns (StartContainerRes);
+  rpc StopContainer(StopContainerReq) returns (StopContainerRes);
+  rpc RestartContainer(RestartContainerReq) returns (RestartContainerRes);
+  rpc RemoveContainer(RemoveContainerReq) returns (RemoveContainerRes);
+  rpc ListContainer(ListContainerReq) returns (ListContainerRes);
+  rpc InspectContainer(InspectContainerReq) returns (InspectContainerRes);
+  rpc ExecContainer(ExecContainerReq) returns (ExecContainerRes);
+  rpc LogsContainer(LogsContainerReq) returns (LogsContainerRes);
+  rpc RenameContainer(RenameContainerReq) returns (RenameContainerRes);
+
+  // image
+}

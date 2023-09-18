@@ -1,10 +1,34 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package main
 
-import "poker/tools/daemon"
+import (
+	"flag"
+
+	"poker/daemon/engine"
+	"poker/pkg/config"
+
+	log "github.com/sirupsen/logrus"
+)
+
+var (
+	configPath   string
+	pokerVersion string
+	buildTime    string
+	gitRevision  string
+	goVersion    string
+)
+
+func init() {
+	flag.StringVar(&configPath, "config", "/etc/poker/config.yaml", "config file path")
+}
 
 func main() {
-	daemon.Execute()
+	flag.Parse()
+
+	if err := config.ReadConfig(configPath); err != nil {
+		log.Fatalf("read config fail, error: %s", err)
+	}
+
+	config.SetVersion(pokerVersion, buildTime, gitRevision, goVersion)
+
+	engine.Run()
 }

@@ -1,0 +1,10 @@
+Engine:
+  socket: /var/run/poker.sock
+Logger:
+  level: info # info | warn | error
+  output: stdout # stdout | path
+  format: text # text | json
+Container:
+  base_path: /var/poker/containers
+Image:
+  base_path: /var/poker/images
